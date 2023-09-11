@@ -92,9 +92,10 @@ const ResidentsDetails = (props) => {
                                             <li> Name: {selectedResident.name}</li>
                                             <li> Email: {selectedResident.email}</li>
                                             <li> PhoneNumber : {selectedResident.phoneNumber} </li>
-                                            <li> Date Of Joining : {selectedResident.dateOfJoining.slice(0,10)}</li>
+                                            <li> Date Of Joining : {selectedResident.dateOfJoining && selectedResident.dateOfJoining.slice(0,10)}</li>
                                             <li> Guardian Name : {selectedResident.guardianName} </li>
                                             <li> Guardian Number : {selectedResident.guardianNumber} </li>
+                                            <li> Address : {selectedResident.address} </li>
                                             <ul> Room Details : 
                                                 <li> Sharing : {selectedResident.roomId && selectedResident.roomId.sharing} </li>
                                                 <li> Room Number : { selectedResident.roomId && selectedResident.roomId.roomNumber}</li>
