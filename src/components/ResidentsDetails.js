@@ -1,82 +1,73 @@
-import React, { useContext, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { startGetSingleResident , startRemoveResident } from "../actions/residentsActions";
-import { RoleContext } from "./NavBar";
+import React, { useContext, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { startGetSingleResident, startRemoveResident } from "../actions/residentsActions"
+import { RoleContext } from "./NavBar"
+
+
+import AddResident from "./AddResidentForm"
 
 const ResidentsDetails = (props) => {
-    const {role} = useContext(RoleContext)
-    //showModal - state variable is used to determine whether the modal should be displayed (true) or hidden (false)
+    const { role } = useContext(RoleContext)
+
     const [showModal, setShowModal] = useState(false)
+    const [editResident, setEditResident] = useState(null)
 
-    const residents = useSelector((state) => {
-        return state.residents.residents
-    })
-    console.log('residents', residents)
+    const residents = useSelector((state) => state.residents.residents)
 
-    const pgDetailsId = useSelector((state) => {
-        return state.pgDetails.pgDetails.map((ele) => ele._id).join(',')
-    })
-    
-    console.log("PgDetailsId", pgDetailsId)
+    const pgDetailsId = useSelector((state) => state.pgDetails.pgDetails.map((ele) => ele._id).join(','))
 
-    const selectedResident = useSelector((state) => {
-        return state.residents.selectedResident
-    })
+    const selectedResident = useSelector((state) => state.residents.selectedResident)
     console.log('selectedResident' , selectedResident)
 
     const dispatch = useDispatch()
 
     const handleShowResident = (residentId) => {
-        //console.log('residentId-show', residentId)
-        //console.log('pgId-show', pgDetailsId)
         dispatch(startGetSingleResident(pgDetailsId, residentId))
-        setShowModal(true) // Open the modal when the show button is clicked
+        setShowModal(true)
     }
 
     const closeModal = () => {
-        setShowModal(false) // Close the modal
-    }
-
-    const handleEditResident = (residentId) => {
-        console.log('residentId-edit', residentId)
-        // dispatch(startEditResident(residentId))
+        setShowModal(false)
     }
 
     const handleRemoveResident = (residentId) => {
-        console.log('residentId-remove', residentId)
-        const confirmation = window.confirm('are you sure?')
-        if(confirmation){
+        const confirmation = window.confirm('Are you sure?')
+        if (confirmation) {
             dispatch(startRemoveResident(residentId))
+        }
+    }
+
+    const handleEditResident = (residentId) => {
+        // Set the selected resident as the editResident
+        const selectedResident = residents.find((resident) => resident._id === residentId)
+        if (selectedResident) {
+            setEditResident(selectedResident)
         }
     }
 
     return (
         <div>
-            {role === 'pg_admin' && 
+            {role === 'pg_admin' && (
                 <div>
                     <h1>Residents Details</h1>
                     <h2>Total Residents - {residents.length}</h2>
-                    <h4> List of Residents </h4>
+                    <h4>List of Residents</h4>
                     <ul>
-                        {residents.map((resident) => {
-                            //console.log('images', resident.profileImage)
-                            return (
-                                <div key={resident._id}>
-                                    <img
-                                        src={`http://localhost:3800/images/${resident.profileImage}`}
-                                        alt="Profile"
-                                        width="100" 
-                                        height="100"
-                                    />
-                                    <li> Name: {resident.name}</li>
-                                    <button onClick={() => handleShowResident(resident._id)}>Show</button>
-                                    <button onClick={() => handleRemoveResident(resident._id)}>Remove</button>
-                                    <button onClick={() => handleEditResident(resident._id)}>Edit</button>
-                                </div>
-                            )
-                        })}
+                        {residents.map((resident) => (
+                            <div key={resident._id}>
+                                <img
+                                    src={`http://localhost:3800/images/${resident.profileImage}`}
+                                    alt="Profile"
+                                    width="100"
+                                    height="100"
+                                />
+                                <li> Name: {resident.name}</li>
+                                <button onClick={() => handleShowResident(resident._id)}>Show</button>
+                                <button onClick={() => handleRemoveResident(resident._id)}>Remove</button>
+                                <button onClick={() => handleEditResident(resident._id)}>Edit</button>
+                            </div>
+                        ))}
                     </ul>
-
                     <div className="modal" tabIndex="-1" role="dialog" style={{ display: showModal ? "block" : "none" }}>
                         <div className="modal-dialog" role="document">
                             <div className="modal-content">
@@ -118,8 +109,9 @@ const ResidentsDetails = (props) => {
                             </div>
                         </div>
                     </div>
+                    {editResident && <AddResident editResident={editResident} />}
                 </div>
-            }     
+            )}
         </div>
     )
 }

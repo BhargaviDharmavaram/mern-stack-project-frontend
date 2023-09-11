@@ -1,5 +1,4 @@
-import axios from "axios";
-
+import axios from "axios"
 
 export const startCreateResident = (formData, pgDetailsId, reset) => {
     return async (dispatch) => {
@@ -94,17 +93,32 @@ export const removeResident = (data) => {
     }
 }
 
-// export const startEditResident = (residentId) => {
-//     return async (dispatch) => {
-//         try{
-//             const response = await axios.put(`http://localhost:3800/api/residents/updateResident/${residentId}`, {
-//                 headers : {
-//                     'x-auth' : localStorage.getItem('token')
-//                 }
-//             })
-//             console.log('edit-resident-res', response.data)
-//         }catch(e){
-//             alert(e.message)
-//         }
-//     }
-// }
+
+export const startEditResident = (residentId, formData, pgDetailsId, reset) => {
+    return async (dispatch) => {
+        try {
+            const response = await axios.put(
+                `http://localhost:3800/api/residents/updateResident/${residentId}`,
+                formData,
+                {
+                    headers: {
+                        'x-auth': localStorage.getItem('token'),
+                    },
+                }
+            )
+            console.log('edit-resident-res', response.data)
+            dispatch(editResident(response.data))
+            reset()
+        } catch (e) {
+            alert(e.message)
+        }
+    }
+}
+
+export const editResident = (data) => {
+    return {
+        type: 'EDIT_RESIDENT',
+        payload: data,
+    }
+}
+

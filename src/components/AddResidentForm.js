@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { startCreateResident } from '../actions/residentsActions';
-import AccountConfirmationLink from './AccountConfirmationLink';
-import axios from 'axios';
+import React, { useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { startCreateResident, startEditResident} from '../actions/residentsActions'
+import AccountConfirmationLink from './AccountConfirmationLink'
+import axios from 'axios'
 
-const AddResident = (props) => {
+const AddResident = ({editResident}) => {
     const [name, setName] = useState('')
     const [profileImage, setProfileImage] = useState(null)
     const [phoneNumber, setPhoneNumber] = useState('')
@@ -18,6 +18,7 @@ const AddResident = (props) => {
 
     const profileImageInputRef = useRef(null)
     const aadharCardInputRef = useRef(null)
+    
     
     // Handle input change for text fields
     const handleInputChange = (e) => {
@@ -89,6 +90,31 @@ const AddResident = (props) => {
     console.log('residentId', residentId)
 
     const dispatch = useDispatch()
+    
+    useEffect(() => {
+        // If `editResident` has data, it means you are editing an existing resident.
+        // Pre-fill the form fields with the data.
+        if (editResident) {
+            setName(editResident.name || '')
+            setPhoneNumber(editResident.phoneNumber || '')
+            setEmail(editResident.email || '')
+            setGuardianName(editResident.guardianName || '')
+            setGuardianNumber(editResident.guardianNumber || '')
+            setAddress(editResident.address || '')
+            setRoomId(editResident.roomId || '')
+
+            // Pre-fill profileImage and aadharCard fields with existing s, if available
+            if (editResident.profileImage) {
+                setProfileImage(editResident.profileImage)
+            }
+
+            if (editResident.aadharCard) {
+                setAadharCard(editResident.aadharCard)
+            }
+        }
+
+    }, [editResident])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -103,6 +129,7 @@ const AddResident = (props) => {
         formData.append('profileImage', profileImage)
         formData.append('aadharCard', aadharCard)
         formData.append('roomId', roomId)
+    
         const reset = () => {
             setName('')
             setAddress('')
@@ -114,20 +141,24 @@ const AddResident = (props) => {
             profileImageInputRef.current.value = ''
             aadharCardInputRef.current.value= ''
         }   
-        await dispatch(startCreateResident(formData, pgDetailsId, reset))
+        if (editResident) {
+            await dispatch(startEditResident(editResident._id, formData, pgDetailsId, reset))
+        } else {
+            await dispatch(startCreateResident(formData, pgDetailsId, reset))
+        }
         
-            // After successfully adding the resident, make an API call to get the updated available rooms
-            const response = await axios.get(`http://localhost:3800/api/rooms/availableRooms?pgDetailsId=${pgDetailsId}`, {
-                headers: {
-                'x-auth': localStorage.getItem('token'),
-                },
-            })
-            try{
-                console.log('updated-rooms-data', response.data)
-                setAvailableRooms(response.data)
-            }catch(e){
-                console.log(e.message)
-            }  
+        // After successfully adding the resident, make an API call to get the updated available rooms
+        const response = await axios.get(`http://localhost:3800/api/rooms/availableRooms?pgDetailsId=${pgDetailsId}`, {
+            headers: {
+            'x-auth': localStorage.getItem('token'),
+            },
+        })
+        try{
+            console.log('updated-rooms-data', response.data)
+            setAvailableRooms(response.data)
+        }catch(e){
+            console.log(e.message)
+        }  
                 
     }
 
@@ -140,7 +171,11 @@ const AddResident = (props) => {
             <br />
             <label>Profile Image</label>
             <br />
-            <input type="file" ref = {profileImageInputRef} name="profileImage" onChange={handleFileInputChange} />
+            <input type="file" ref={profileImageInputRef} name="profileImage" onChange={handleFileInputChange} />
+            <br />
+            {editResident && editResident.profileImage && (
+            <img src={`http://localhost:3800/images/${editResident.profileImage}`} alt="Profile" width='100' height='100' />
+            )}
             <br />
             <label>Phone Number</label>
             <br />
@@ -166,6 +201,10 @@ const AddResident = (props) => {
             <br />
             <input type="file" ref={aadharCardInputRef} name="aadharCard" onChange={handleFileInputChange} />
             <br />
+            {editResident && editResident.aadharCard && (
+            <img src={`http://localhost:3800/images/${editResident.aadharCard}`} alt="Profile" width='100' height='100' />
+            )}
+            <br />
             <label>Select Room:</label>
                 <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
                     <option value="">Select a room</option>
@@ -176,7 +215,7 @@ const AddResident = (props) => {
                     ))}
                 </select>
             <br />
-            <input type="submit" value="Add Resident" />
+            <input type="submit" value={editResident ? 'Update Resident' : 'Add Resident'} />
         </form>
         <AccountConfirmationLink residentId = {residentId} />
         </div>

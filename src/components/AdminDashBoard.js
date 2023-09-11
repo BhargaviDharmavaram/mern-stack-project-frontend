@@ -13,6 +13,7 @@ const AdminDashBoard = (props) => {
             <RoomDetails />
             <PaymentReminders />
             <PaymentDetails />
+
         </div>
     )
 }
