@@ -1,16 +1,12 @@
-<<<<<<< Updated upstream
 import React  from "react";
+import { Link } from "react-router-dom";
 import AverageRating from "./AverageRating";
 import ResidentsDetails from "./ResidentsDetails";
 import RoomDetails from "./RoomDetails";
 import PaymentReminders from "./PaymentReminders";
 import PaymentDetails from "./PaymentsDetails";
-=======
-import React  from "react"
-import AverageRating from "./AverageRating"
-import ResidentsDetails from "./ResidentsDetails"
-import RoomDetails from "./RoomDetails"
->>>>>>> Stashed changes
+import PaymentsPieChart from "./PaymentsPieChart";
+import RoomPieChart from "./RoomPieChart";
 
 const AdminDashBoard = (props) => {
     return(
@@ -20,7 +16,9 @@ const AdminDashBoard = (props) => {
             <RoomDetails />
             <PaymentReminders />
             <PaymentDetails />
-
+            <Link to="/vacated-residents">Vacated Residents</Link>
+            <PaymentsPieChart />
+            <RoomPieChart />
         </div>
     )
 }

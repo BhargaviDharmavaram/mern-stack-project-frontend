@@ -3,7 +3,6 @@ const initialState = {
     availableRooms : [],
     unAvailableRooms : [], 
     selectedRoom : {},
-    removeRoomError: null
 }
 
 const roomsReducer = (state = initialState, action) => {
@@ -20,30 +19,17 @@ const roomsReducer = (state = initialState, action) => {
         case "ADD_ROOM" : {
             return {...state, 
                 rooms : [...state.rooms, action.payload], 
-                availableRooms : [...state.availableRooms,action.payload],
-                removeRoomError: null
+                availableRooms : [...state.availableRooms,action.payload]
             }
         }
         case "SHOW_SINGLE_ROOM" :{
             return {...state, selectedRoom : action.payload}
         }
         case "REMOVE_ROOM" : {
-            const updatedRooms = state.rooms.filter(
-                (room) => room._id !== action.payload._id
-            )
-            return { ...state, rooms : updatedRooms, availableRooms : updatedRooms }
-            // const updatedRooms = state.rooms.filter((room) => room._id !== action.payload._id);
-            // const updatedAvailableRooms = state.availableRooms.filter((room) => room._id !== action.payload._id)
-          
-            // return {
-            //   ...state,
-            //   rooms: updatedRooms,
-            //   availableRooms: updatedAvailableRooms,
-            //   removeRoomError: null,
-            // }
-        }
-        case "REMOVE_ROOM_ERROR": {
-            return { ...state, removeRoomError: action.payload }
+            console.log('remove-action', action.payload)
+            const updatedRooms = state.rooms.filter((room) => room._id !== action.payload._id)
+            const updatedAvailableRooms = state.availableRooms.filter((room)=>room._id !== action.payload._id)
+            return { ...state, rooms : updatedRooms , availableRooms : updatedAvailableRooms}
         }
         default : {
             return {...state}

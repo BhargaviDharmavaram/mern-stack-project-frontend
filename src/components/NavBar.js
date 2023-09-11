@@ -10,11 +10,9 @@ import AddRoom from "./AddRoomForm"
 import AddResident from "./AddResidentForm"
 import ConfirmResident from "./ConfirmResident"
 import AdminDashBoard from "./AdminDashBoard"
-<<<<<<< Updated upstream
 import PaymentPage from "./PaymentPage"
-=======
 import ResidentDashBoard from "./ResidentDashboard"
->>>>>>> Stashed changes
+import VacatedResidents from "./VacatedResidents"
 
 export const RoleContext = createContext()
 
@@ -65,7 +63,7 @@ const NavBar = (props) => {
                             <li> <Link to = '/addresident'> AddResident </Link></li> 
                             <li> <Link to = '/admindashboard'>AdminDashBoard</Link> </li>
                         </div> : <div>
-                            <li> <Link to = '/residentdashboard'>AdminDashBoard</Link> </li>
+                            <li> <Link to = '/residentdashboard'>Resident DashBoard</Link> </li>
                             <li> <Link to = '/confirm'>ConfirmResident</Link>  </li>
                             <li> <Link to="/payment/:razorPayId"> PaymentPage </Link> </li>
                         </div>
@@ -91,6 +89,7 @@ const NavBar = (props) => {
                 <Route path = "/confirm" component={ConfirmResident} />
                 <Route path="/payment/:razorPayId" component = {PaymentPage} />
                 <Route path = '/admindashboard' component = {AdminDashBoard} />
+                <Route path="/vacated-residents" component={VacatedResidents} />
                 <Route path = '/residentdashboard' component = {ResidentDashBoard} />
             </RoleContext.Provider>
         </div>

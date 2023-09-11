@@ -5,7 +5,6 @@ import { startShowSelectedRoom , startRemoveRoom} from "../actions/roomActions";
 const RoomsList = (props) => {
     // State to control the modal's open/close state
     const [showModal, setShowModal] = useState(false)
-
     const rooms = useSelector((state) => {
         return state.rooms.rooms
     })
@@ -21,11 +20,6 @@ const RoomsList = (props) => {
     const selectedRoom = useSelector((state) => {
         return state.rooms.selectedRoom
     })
-
-    const removeRoomError = useSelector((state) => {
-        return state.rooms.removeRoomError
-    })
-    console.log('removeRoomError', removeRoomError)
 
     const dispatch = useDispatch()
 
@@ -44,7 +38,6 @@ const RoomsList = (props) => {
         console.log('roomId-remove', roomId)
         dispatch(startRemoveRoom(roomId))
     }
-    
 
     return (
         <div>
@@ -56,9 +49,6 @@ const RoomsList = (props) => {
                         <button onClick={() => handleShowRoom(room._id)}>Show</button>
                         <button>Edit</button>
                         <button onClick={() => handleRemoveRoom(room._id)}>Remove</button>
-                        {room._id === (removeRoomError && removeRoomError.roomId) && (
-                            <p style={{ color: "red" }}>{removeRoomError && removeRoomError.message}</p>
-                        )}
                     </div>
                 )
             })}
