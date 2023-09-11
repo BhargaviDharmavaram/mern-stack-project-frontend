@@ -10,6 +10,7 @@ import AddRoom from "./AddRoomForm"
 import AddResident from "./AddResidentForm"
 import ConfirmResident from "./ConfirmResident"
 import AdminDashBoard from "./AdminDashBoard"
+import PaymentPage from "./PaymentPage"
 
 export const RoleContext = createContext()
 
@@ -61,6 +62,7 @@ const NavBar = (props) => {
                             <li> <Link to = '/admindashboard'>AdminDashBoard</Link> </li>
                         </div> : <div>
                             <li> <Link to = '/confirm'>ConfirmResident</Link>  </li>
+                            <li> <Link to="/payment/:razorPayId"> PaymentPage </Link> </li>
                         </div>
                         }
                     </React.Fragment> : <React.Fragment>
@@ -82,6 +84,7 @@ const NavBar = (props) => {
                 <Route path = '/addroom' component = {AddRoom} />
                 <Route path = '/addresident' component = {AddResident} />
                 <Route path = "/confirm" component={ConfirmResident} />
+                <Route path="/payment/:razorPayId" component = {PaymentPage} />
                 <Route path = '/admindashboard' component = {AdminDashBoard} />
             </RoleContext.Provider>
         </div>

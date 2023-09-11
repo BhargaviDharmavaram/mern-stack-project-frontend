@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { startAdminGetPgDetails } from './actions/pgDetailsActions'
 import { startGetResidents } from './actions/residentsActions'
 import { startGetAllRooms, startGetAvailableRooms, startGetUnAvailableRooms } from './actions/roomActions'
+import { startGetCompletedPayments, startGetCompletedPaymentsTotal, startGetPendingPayments, startGetPendingPaymentsTotal } from './actions/paymentActions'
 
 const  App = (props) => {
     const [userLoggedIn, setUserLoggedIn] = useState(false)
@@ -33,14 +34,13 @@ const  App = (props) => {
         dispatch(startGetAllRooms())
         dispatch(startGetAvailableRooms())
         dispatch(startGetUnAvailableRooms())
+        dispatch(startGetCompletedPayments())
+        dispatch(startGetPendingPayments())
+        dispatch(startGetCompletedPaymentsTotal())
+        dispatch(startGetPendingPaymentsTotal())
     }, [dispatch])
     return(
         <div>
-            {/* <Link to="/payment/:razorPayId"> PaymentPage </Link>
-
-            <Route path="/payment/:razorPayId" component = {PaymentPage} /> */}
-
-
             <NavBar userLoggedIn = {userLoggedIn} handleAuth = {handleAuth} role = {role} />
         </div>
     )

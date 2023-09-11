@@ -4,6 +4,7 @@ import usersReducer from "../reducers/usersReducers";
 import pgDetailsReducer from "../reducers/pgDetailsReducers";
 import roomsReducer from "../reducers/roomsReducers";
 import residentsReducer from "../reducers/residentsReducer";
+import paymentsReducer from "../reducers/paymentReducers";
 
 
 const configureStore = () => {
@@ -12,7 +13,8 @@ const configureStore = () => {
           users: usersReducer,
           pgDetails: pgDetailsReducer,
           rooms: roomsReducer,
-          residents : residentsReducer 
+          residents : residentsReducer ,
+          payments : paymentsReducer
         }),
         applyMiddleware(thunk)
       )

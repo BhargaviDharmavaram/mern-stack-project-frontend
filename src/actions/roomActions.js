@@ -129,3 +129,65 @@ export const getunAvailableRooms = (data) => {
         payload : data
     }
 }
+
+export const startShowSelectedRoom = (roomId, pgDetailsId) => {
+    return async (dispatch)=>{
+        try{
+            const response = await axios.get(`http://localhost:3800/api/rooms/particularRoom/${roomId}?pgDetailsId=${pgDetailsId}`, {
+                headers : {
+                    'x-auth' : localStorage.getItem('token')
+                }
+            })
+            console.log('single-room-res', response.data)
+            dispatch(showSingleRoom(response.data))
+        }catch(e){
+            alert(e.message)
+        }
+    }
+}
+
+export const showSingleRoom = (data) => {
+    return{
+        type :"SHOW_SINGLE_ROOM" ,
+        payload : data
+    }
+}
+
+export const startRemoveRoom = (roomId) => {
+    return  async (dispatch)=> {
+        try{
+            const response = await axios.delete(`http://localhost:3800/api/rooms/destroyRoom/${roomId}`, {
+                headers : {
+                    'x-auth' : localStorage.getItem('token')
+                }
+            })
+            console.log('remove-room-res', response.data)
+            // Check if the response contains an error message
+            if (response.data && response.data.message) {
+                console.log('res-data-msg', response.data.message, roomId)
+                // Dispatch an action to store the error message and roomId in the state
+                dispatch(removeRoomError({ roomId, message: response.data.message }))
+            } else {
+                // If no error message, dispatch the removeRoom action
+                dispatch(removeRoom(response.data))
+            }
+            
+        }catch(e){
+            alert(e.message)
+        }
+    }
+}
+
+export const removeRoom = (data) => {
+    return{
+        type : "REMOVE_ROOM",
+        payload : data
+    }
+}
+
+export const removeRoomError = (errorMessage) => {
+    return {
+        type: "REMOVE_ROOM_ERROR",
+        payload: errorMessage
+    }
+}
