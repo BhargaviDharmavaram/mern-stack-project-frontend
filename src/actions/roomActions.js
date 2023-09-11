@@ -154,40 +154,54 @@ export const showSingleRoom = (data) => {
 }
 
 export const startRemoveRoom = (roomId) => {
-    return  async (dispatch)=> {
-        try{
-            const response = await axios.delete(`http://localhost:3800/api/rooms/destroyRoom/${roomId}`, {
-                headers : {
-                    'x-auth' : localStorage.getItem('token')
-                }
-            })
-            console.log('remove-room-res', response.data)
-            // Check if the response contains an error message
-            if (response.data && response.data.message) {
-                console.log('res-data-msg', response.data.message, roomId)
-                // Dispatch an action to store the error message and roomId in the state
-                dispatch(removeRoomError({ roomId, message: response.data.message }))
-            } else {
-                // If no error message, dispatch the removeRoom action
-                dispatch(removeRoom(response.data))
-            }
-            
-        }catch(e){
-            alert(e.message)
+    return async (dispatch) => {
+      try {
+        // Display the confirmation dialog
+        const confirmationResult = await Swal.fire({
+          icon: 'question',
+          title: 'Are you sure?',
+          showCancelButton: true, // Display cancel button
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel', // Text for the cancel button
+        })
+  
+        // Check if the user clicked "Cancel"
+        if (!confirmationResult.isConfirmed) {
+          return // Do nothing if the user canceled
         }
+  
+        // If the user clicked "OK," proceed with room removal
+        const response = await axios.delete(`http://localhost:3800/api/rooms/destroyRoom/${roomId}`, {
+          headers: {
+            'x-auth': localStorage.getItem('token'),
+          },
+        })
+  
+        console.log('remove-room-res', response.data)
+        // Check if the response contains a warning message
+        if (response.data.message && response.data.message.startsWith('Cannot delete room')) {
+          // Show a Swal warning with the error message from the server
+          Swal.fire({
+            icon: 'warning',
+            title: 'Cannot Delete Room',
+            text: response.data.message,
+          })
+        } else {
+          // Dispatch the removeRoom action with the response data
+          dispatch(removeRoom(response.data))
+        }
+      } catch (e) {
+        alert(e.message)
+      }
     }
 }
+  
 
 export const removeRoom = (data) => {
     return{
         type : "REMOVE_ROOM",
         payload : data
-    }
-}
-
-export const removeRoomError = (errorMessage) => {
-    return {
-        type: "REMOVE_ROOM_ERROR",
-        payload: errorMessage
     }
 }

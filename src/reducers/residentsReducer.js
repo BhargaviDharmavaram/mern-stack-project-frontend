@@ -1,6 +1,7 @@
 const initialState = {
     residents : [],
-    selectedResident : {}
+    selectedResident : {},
+    vacatedResidents : []
 }
 
 const residentsReducer = (state = initialState, action) =>{
@@ -40,6 +41,9 @@ const residentsReducer = (state = initialState, action) =>{
             }
 
             return state
+        }
+        case "GET_VACATED_RESIDENTS" : {
+            return {...state, vacatedResidents : action.payload}
         }
         default: {
             return state

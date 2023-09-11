@@ -122,3 +122,25 @@ export const editResident = (data) => {
     }
 }
 
+export const startGetVacatedResidents = () => {
+    return async (dispatch) => {
+        try{
+            const response = await axios.get('http://localhost:3800/api/residents/admin/softDeletedResidents', {
+                headers : {
+                    'x-auth' : localStorage.getItem('token')
+                }
+            })
+            console.log('vacated-residents', response.data)
+            dispatch(getVacatedResidents(response.data))
+        }catch(e){
+            alert(e.message)
+        }
+    }
+}
+
+export const getVacatedResidents = (data) => {
+    return {
+        type:'GET_VACATED_RESIDENTS',
+        payload:data
+    }
+}
