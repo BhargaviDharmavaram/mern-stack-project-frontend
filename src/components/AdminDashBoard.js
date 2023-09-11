@@ -6,9 +6,9 @@ import RoomDetails from "./RoomDetails";
 const AdminDashBoard = (props) => {
     return(
         <div>
-            <AverageRating />
-            <ResidentsDetails />
-            <RoomDetails />
+            <AverageRating/>
+            <ResidentsDetails/>
+            <RoomDetails/>
         </div>
     )
 }
