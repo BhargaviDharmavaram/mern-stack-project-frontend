@@ -107,6 +107,29 @@ export const getAvailableRooms = (data) => {
     }
 }
 
+export const startGetAvailableRoomsForResident = (pgDetailsId) => {
+    return async (dispatch) => {
+        try{
+            const response = await axios.get(`http://localhost:3800/api/rooms/availableRoomsForResident/${pgDetailsId}`, {
+                headers : {
+                    'x-auth' : localStorage.getItem('token')
+                }
+            })
+            console.log('all-available-rooms-resident', response.data)
+            dispatch(getAvailableRoomsForResident(response.data))
+        }catch(e){
+            alert(e.message)
+        }
+    }
+}
+
+export const getAvailableRoomsForResident = (data) => {
+    return{
+        type : "GET_AVAILABLE_ROOMS_FOR_RESIDENT",
+        payload : data
+    }
+}
+
 export const startGetUnAvailableRooms = () => {
     return async (dispatch) => {
         try{

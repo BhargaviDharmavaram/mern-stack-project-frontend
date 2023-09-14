@@ -1,5 +1,6 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startGetUnAvailableRooms } from "../actions/roomActions";
 
 const UnAvailableRooms = (props) => {
     const unAvailableRooms = useSelector((state) => {
@@ -11,6 +12,10 @@ const UnAvailableRooms = (props) => {
         //console.log(`Comparing ${a.roomNumber} and ${b.roomNumber}`)
         return a.roomNumber - b.roomNumber
     })
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(startGetUnAvailableRooms())
+    }, [dispatch])
     return (
         <div>
             <h3>Un-AvailableRooms - {unAvailableRooms.length}</h3>

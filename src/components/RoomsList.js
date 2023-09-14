@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { startShowSelectedRoom , startRemoveRoom} from "../actions/roomActions";
+import { startShowSelectedRoom , startRemoveRoom, startGetAllRooms} from "../actions/roomActions";
 
 const RoomsList = (props) => {
     // State to control the modal's open/close state
@@ -38,6 +38,9 @@ const RoomsList = (props) => {
         console.log('roomId-remove', roomId)
         dispatch(startRemoveRoom(roomId))
     }
+    useEffect(()=>{
+        dispatch(startGetAllRooms())
+    }, [dispatch])
 
     return (
         <div>
@@ -45,7 +48,7 @@ const RoomsList = (props) => {
             {sortedRooms.map((room) => {
                 return (
                     <div key={room._id}>
-                        <li> Room Number : {room.roomNumber} </li>
+                        <li key={room._id}> Room Number : {room.roomNumber} </li>
                         <button onClick={() => handleShowRoom(room._id)}>Show</button>
                         <button>Edit</button>
                         <button onClick={() => handleRemoveRoom(room._id)}>Remove</button>

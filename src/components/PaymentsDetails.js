@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CompletedPayments from "./CompletedPayments";
 import PendingPayments from "./PendingPayments";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { startGetCompletedPaymentsTotal, startGetPendingPaymentsTotal } from "../actions/paymentActions";
 
 const PaymentDetails = (props) => {
     const completedPaymentsTotal = useSelector((state)=>{
@@ -12,6 +13,11 @@ const PaymentDetails = (props) => {
         return state.payments.pendingPaymentsTotal
     })
     console.log('pending-total', pendingPaymentsTotal)
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(startGetCompletedPaymentsTotal())
+        dispatch(startGetPendingPaymentsTotal())
+    }, [dispatch])
 
     return (
         <div>
