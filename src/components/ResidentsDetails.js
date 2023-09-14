@@ -15,6 +15,7 @@ const ResidentsDetails = (props) => {
     const residents = useSelector((state) => state.residents.residents)
 
     const pgDetailsId = useSelector((state) => state.pgDetails.pgDetails.map((ele) => ele._id).join(','))
+    console.log(pgDetailsId)
 
     const selectedResident = useSelector((state) => state.residents.selectedResident)
     console.log('selectedResident' , selectedResident)
@@ -22,6 +23,7 @@ const ResidentsDetails = (props) => {
     const dispatch = useDispatch()
 
     const handleShowResident = (residentId) => {
+        console.log('pgDetailsId-resident-show', pgDetailsId)
         dispatch(startGetSingleResident(pgDetailsId, residentId))
         setShowModal(true)
     }

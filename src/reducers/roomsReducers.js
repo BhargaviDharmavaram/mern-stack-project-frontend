@@ -3,6 +3,7 @@ const initialState = {
     availableRooms : [],
     unAvailableRooms : [], 
     selectedRoom : {},
+    availableRoomsForResident : []
 }
 
 const roomsReducer = (state = initialState, action) => {
@@ -30,6 +31,9 @@ const roomsReducer = (state = initialState, action) => {
             const updatedRooms = state.rooms.filter((room) => room._id !== action.payload._id)
             const updatedAvailableRooms = state.availableRooms.filter((room)=>room._id !== action.payload._id)
             return { ...state, rooms : updatedRooms , availableRooms : updatedAvailableRooms}
+        }
+        case "GET_AVAILABLE_ROOMS_FOR_RESIDENT" : {
+            return {...state , availableRoomsForResident : action.payload}
         }
         default : {
             return {...state}

@@ -1,11 +1,16 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startGetCompletedPayments } from "../actions/paymentActions";
 
 const CompletedPayments = (props) => {
     const completedPayments = useSelector((state)=>{
         return state.payments.completedPayments
     })
     console.log('completed-payments', completedPayments)
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(startGetCompletedPayments())
+    }, [dispatch])
     return (
         <div>
             <h3>Completed Payments - {completedPayments.length} </h3>

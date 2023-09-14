@@ -1,6 +1,7 @@
 import axios from "axios"
 
 export const startCreateResident = (formData, pgDetailsId, reset) => {
+    console.log(pgDetailsId)
     return async (dispatch) => {
         try{
             const response = await axios.post(`http://localhost:3800/api/residents/addResident/${pgDetailsId}`, formData , {

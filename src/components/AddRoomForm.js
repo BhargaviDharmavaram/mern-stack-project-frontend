@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { startCreateRoom } from '../actions/roomActions'
+import { RoleContext } from './NavBar'
 
 const AddRoom = (props) => {
+    const {role} = useContext(RoleContext)
     const [sharing, setSharing] = useState('')
     const [numRoomsToGenerate, setNumRoomsToGenerate] = useState('')
     const [generateRooms, setGenerateRooms] = useState([])
@@ -58,6 +60,7 @@ const AddRoom = (props) => {
         }
     
         try {
+            console.log('pgDetailsId-add-room', pgDetailsId)
             await dispatch(startCreateRoom(formData, pgDetailsId, reset))
         } catch (e) {
             console.error(e.message)
@@ -67,63 +70,67 @@ const AddRoom = (props) => {
 
     return (
         <div>
-            <h2>Add Rooms</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>Sharing:</label>
-                    <input
-                        type="text"
-                        value={sharing}
-                        onChange={handleSharingChange}
-                        required
-                    />
-                    
-                    <label>Number of Rooms to Generate:</label>
-                    <input
-                        type="number"
-                        value={numRoomsToGenerate}
-                        onChange={handleNumRoomsChange}
-                        required
-                    />
-                    
-                    <button type="button" onClick={handleGenerate}>Generate</button>
-                    {generateRooms.length > 0 && 
-                        <table>
-                            <thead>
-                                <tr>
-                                <th>Room</th>
-                                <th>Room Number</th>
-                                <th>Floor</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {generateRooms.map((room, index) => (
-                                <tr key={index}>
-                                    <td>Room {index + 1}</td>
-                                    <td>
-                                    <input
-                                        type="text"
-                                        value={room.roomNumber}
-                                        onChange={(e) =>
-                                        handleRoomChange(index, 'roomNumber', e.target.value)
-                                        }
-                                        required
-                                    />
-                                    </td>
-                                    <td>
-                                    <input
-                                        type="text"
-                                        value={room.floor}
-                                        onChange={(e) => handleRoomChange(index, 'floor', e.target.value)}
-                                        required
-                                    />
-                                    </td>
-                                </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    }
-                <button type="submit">Submit</button>
-            </form>
+            {role === 'pg_admin' && 
+                <div>
+                    <h2>Add Rooms</h2>
+                    <form onSubmit={handleSubmit}>
+                        <label>Sharing:</label>
+                        <input
+                            type="text"
+                            value={sharing}
+                            onChange={handleSharingChange}
+                            required
+                        />
+                        
+                        <label>Number of Rooms to Generate:</label>
+                        <input
+                            type="number"
+                            value={numRoomsToGenerate}
+                            onChange={handleNumRoomsChange}
+                            required
+                        />
+                        
+                        <button type="button" onClick={handleGenerate}>Generate</button>
+                        {generateRooms.length > 0 && 
+                            <table>
+                                <thead>
+                                    <tr>
+                                    <th>Room</th>
+                                    <th>Room Number</th>
+                                    <th>Floor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {generateRooms.map((room, index) => (
+                                    <tr key={index}>
+                                        <td>Room {index + 1}</td>
+                                        <td>
+                                        <input
+                                            type="text"
+                                            value={room.roomNumber}
+                                            onChange={(e) =>
+                                            handleRoomChange(index, 'roomNumber', e.target.value)
+                                            }
+                                            required
+                                        />
+                                        </td>
+                                        <td>
+                                        <input
+                                            type="text"
+                                            value={room.floor}
+                                            onChange={(e) => handleRoomChange(index, 'floor', e.target.value)}
+                                            required
+                                        />
+                                        </td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        }
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            }   
         </div>
     )
 }

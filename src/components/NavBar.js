@@ -13,6 +13,8 @@ import AdminDashBoard from "./AdminDashBoard"
 import PaymentPage from "./PaymentPage"
 import ResidentDashBoard from "./ResidentDashboard"
 import VacatedResidents from "./VacatedResidents"
+import ShowPG from "./ShowPg"
+//import SelectPg from "./SelectPg"
 
 export const RoleContext = createContext()
 
@@ -51,22 +53,25 @@ const NavBar = (props) => {
     
     return(
         <div>
-            <RoleContext.Provider value = {{role, userLoggedIn}}>
+            <RoleContext.Provider value = {{role, userLoggedIn, handleLogout}}>
                 <li><Link to = "/"> Home </Link> </li>
                 {userLoggedIn ? 
                     <React.Fragment>
                         <li> <Link to = "/account"> Account </Link> </li>
                         <li> <Link onClick = {handleLogout} > Logout </Link> </li>
-                        { role === 'pg_admin' ? <div> 
-                            <li> <Link to = '/addpg'> AddPG </Link> </li>
-                            <li> <Link to = '/addroom'> AddRoom </Link>  </li>
-                            <li> <Link to = '/addresident'> AddResident </Link></li> 
-                            <li> <Link to = '/admindashboard'>AdminDashBoard</Link> </li>
-                        </div> : <div>
-                            <li> <Link to = '/residentdashboard'>Resident DashBoard</Link> </li>
-                            <li> <Link to = '/confirm'>ConfirmResident</Link>  </li>
-                            <li> <Link to="/payment/:razorPayId"> PaymentPage </Link> </li>
-                        </div>
+                        { role === 'pg_admin' && 
+                            <div> 
+                                <li> <Link to = '/addpg'> AddPG </Link> </li>
+                                <li> <Link to = '/selectpg'>Select PG</Link> </li>
+                                <li> <Link to = '/addroom'> AddRoom </Link>  </li>
+                                <li> <Link to = '/addresident'> AddResident </Link></li> 
+                                <li> <Link to = '/admindashboard'>AdminDashBoard</Link> </li>
+                            </div> 
+                        }
+                        {role === 'pg_resident' && 
+                            <div>
+                                <li> <Link to = '/residentdashboard'>Resident DashBoard</Link> </li>
+                            </div>
                         }
                     </React.Fragment> : <React.Fragment>
                         <li> <Link to = "/register"> Register</Link> </li>
@@ -82,6 +87,7 @@ const NavBar = (props) => {
                             handleAuth = {handleAuth}
                         />
                     }} />
+                {/* <Route path = '/selectpg' component = {SelectPg} /> */}
                 <Route path = '/account' component={Account} />
                 <Route path = '/addpg' component = {AddPG}/>
                 <Route path = '/addroom' component = {AddRoom} />
@@ -91,6 +97,7 @@ const NavBar = (props) => {
                 <Route path = '/admindashboard' component = {AdminDashBoard} />
                 <Route path="/vacated-residents" component={VacatedResidents} />
                 <Route path = '/residentdashboard' component = {ResidentDashBoard} />
+                <Route path= "/showPg/:pgDetailsId" component={ShowPG} />
             </RoleContext.Provider>
         </div>
     )

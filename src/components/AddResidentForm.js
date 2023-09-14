@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { startCreateResident, startEditResident} from '../actions/residentsActions'
 import AccountConfirmationLink from './AccountConfirmationLink'
 import axios from 'axios'
+import { RoleContext } from './NavBar'
 
 const AddResident = ({editResident}) => {
+    const {role} = useContext(RoleContext)
     const [name, setName] = useState('')
     const [profileImage, setProfileImage] = useState(null)
     const [phoneNumber, setPhoneNumber] = useState('')
@@ -65,6 +67,7 @@ const AddResident = ({editResident}) => {
     const pgDetailsId = useSelector((state) => {
         return state.pgDetails.pgDetails.map((ele) => ele._id).join(',')
     })
+    console.log('pgDetailsId', pgDetailsId)
 
     useEffect(() => {
         axios
@@ -95,14 +98,25 @@ const AddResident = ({editResident}) => {
         // If `editResident` has data, it means you are editing an existing resident.
         // Pre-fill the form fields with the data.
         if (editResident) {
+            console.log('editResident data:', editResident)
             setName(editResident.name || '')
             setPhoneNumber(editResident.phoneNumber || '')
             setEmail(editResident.email || '')
             setGuardianName(editResident.guardianName || '')
             setGuardianNumber(editResident.guardianNumber || '')
             setAddress(editResident.address || '')
-            setRoomId(editResident.roomId || '')
-
+            //setRoomId(editResident.roomId || '')
+            setRoomId(editResident.roomId._id || '')
+            console.log('editResident.roomId:', editResident.roomId)
+            // Pre-fill roomId based on the structure of editResident.roomId
+            // if (editResident.roomId && typeof editResident.roomId === 'object') {
+            //     setRoomId(editResident.roomId._id)
+            // } else if (editResident.roomId) {
+            //     setRoomId(editResident.roomId)
+            // } else {
+            //     setRoomId('')
+            // }
+            
             // Pre-fill profileImage and aadharCard fields with existing s, if available
             if (editResident.profileImage) {
                 setProfileImage(editResident.profileImage)
@@ -164,60 +178,65 @@ const AddResident = ({editResident}) => {
 
     return (
         <div>
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-            <label>Name</label>
-            <br />
-            <input type="text" name="name" value={name} onChange={handleInputChange} />
-            <br />
-            <label>Profile Image</label>
-            <br />
-            <input type="file" ref={profileImageInputRef} name="profileImage" onChange={handleFileInputChange} />
-            <br />
-            {editResident && editResident.profileImage && (
-            <img src={`http://localhost:3800/images/${editResident.profileImage}`} alt="Profile" width='100' height='100' />
-            )}
-            <br />
-            <label>Phone Number</label>
-            <br />
-            <input type="text" name="phoneNumber" value={phoneNumber} onChange={handleInputChange} />
-            <br />
-            <label>Email</label>
-            <br />
-            <input type="text" name="email" value={email} onChange={handleInputChange} />
-            <br />
-            <label>Guardian Name</label>
-            <br />
-            <input type="text" name="guardianName" value={guardianName} onChange={handleInputChange} />
-            <br />
-            <label>Guardian Number</label>
-            <br />
-            <input type="text" name="guardianNumber" value={guardianNumber} onChange={handleInputChange} />
-            <br />
-            <label>Address</label>
-            <br />
-            <input type="text" name="address" value={address} onChange={handleInputChange} />
-            <br />
-            <label>Aadhar Card</label>
-            <br />
-            <input type="file" ref={aadharCardInputRef} name="aadharCard" onChange={handleFileInputChange} />
-            <br />
-            {editResident && editResident.aadharCard && (
-            <img src={`http://localhost:3800/images/${editResident.aadharCard}`} alt="Profile" width='100' height='100' />
-            )}
-            <br />
-            <label>Select Room:</label>
-                <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
-                    <option value="">Select a room</option>
-                    {availableRooms.map((room) => (
-                        <option key={room._id} value={room._id}>
-                            {`Room ${room.roomNumber} - Sharing: ${room.sharing}, Floor: ${room.floor}`} 
-                        </option>
-                    ))}
-                </select>
-            <br />
-            <input type="submit" value={editResident ? 'Update Resident' : 'Add Resident'} />
-        </form>
-        <AccountConfirmationLink residentId = {residentId} />
+            {role === 'pg_admin' && 
+                <div>
+                    <h2>Add Resident</h2>
+                    <form onSubmit={handleSubmit} encType="multipart/form-data">
+                        <label>Name</label>
+                        <br />
+                        <input type="text" name="name" value={name} onChange={handleInputChange} />
+                        <br />
+                        <label>Profile Image</label>
+                        <br />
+                        <input type="file" ref={profileImageInputRef} name="profileImage" onChange={handleFileInputChange} />
+                        <br />
+                        {editResident && editResident.profileImage && (
+                        <img src={`http://localhost:3800/images/${editResident.profileImage}`} alt="Profile" width='100' height='100' />
+                        )}
+                        <br />
+                        <label>Phone Number</label>
+                        <br />
+                        <input type="text" name="phoneNumber" value={phoneNumber} onChange={handleInputChange} />
+                        <br />
+                        <label>Email</label>
+                        <br />
+                        <input type="text" name="email" value={email} onChange={handleInputChange} />
+                        <br />
+                        <label>Guardian Name</label>
+                        <br />
+                        <input type="text" name="guardianName" value={guardianName} onChange={handleInputChange} />
+                        <br />
+                        <label>Guardian Number</label>
+                        <br />
+                        <input type="text" name="guardianNumber" value={guardianNumber} onChange={handleInputChange} />
+                        <br />
+                        <label>Address</label>
+                        <br />
+                        <input type="text" name="address" value={address} onChange={handleInputChange} />
+                        <br />
+                        <label>Aadhar Card</label>
+                        <br />
+                        <input type="file" ref={aadharCardInputRef} name="aadharCard" onChange={handleFileInputChange} />
+                        <br />
+                        {editResident && editResident.aadharCard && (
+                        <img src={`http://localhost:3800/images/${editResident.aadharCard}`} alt="Profile" width='100' height='100' />
+                        )}
+                        <br />
+                        <label>Select Room:</label>
+                            <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+                                <option value="">Select a room</option>
+                                {availableRooms.map((room) => (
+                                    <option key={room._id} value={room._id}>
+                                        {`Room ${room.roomNumber} - Sharing: ${room.sharing}, Floor: ${room.floor}`} 
+                                    </option>
+                                ))}
+                            </select>
+                        <br />
+                        <input type="submit" value={editResident ? 'Update Resident' : 'Add Resident'} />
+                    </form>
+                    <AccountConfirmationLink residentId = {residentId} />
+                </div>
+            }
         </div>
     )
 }
