@@ -1,20 +1,28 @@
 import React, {useState} from "react"
 import {Link} from 'react-router-dom'
+import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { startGetVacatedResidents } from "../actions/residentsActions"
 
 const VacatedResidents = (props) => {
     const [selectedResident, setSelectedResident] = useState(null)
-
+    const [isFetched, setIsFetched] = useState(false)
+    const {pgDetailsId} = useParams()
     const vacatedResidents = useSelector((state) => state.residents.vacatedResidents)
     console.log('vacatedResidents', vacatedResidents)
 
     const dispatch = useDispatch()
 
-    const handleVacatedResidents =  () => {
-        dispatch(startGetVacatedResidents())
+    const handleVacatedResidents = async () => {
+        try {
+          console.log(pgDetailsId)
+          await dispatch(startGetVacatedResidents(pgDetailsId))
+          setIsFetched(true)
+        } catch (error) {
+          console.error("Error fetching vacated residents:", error)
+        }
     }
-    
+
     const handleShowDetails = (resident) => {
         setSelectedResident(resident)
     }
@@ -22,18 +30,22 @@ const VacatedResidents = (props) => {
     return(
         <div>
             <h3>Vacated Residents</h3>
-            <button onClick={handleVacatedResidents}>Vacated Residents</button>
-            {vacatedResidents && (
-                <div>
-                    {vacatedResidents.map((ele)=>{
-                        return(
-                            <div key={ele._id}>
-                                <li>{ele.name} <button onClick={() => handleShowDetails(ele)}>Show</button></li>
-                            </div>
-                        )
-                    })}
-                </div>
+            {!isFetched && (
+                <button onClick={handleVacatedResidents}>Load Vacated Residents</button>
             )}
+            {isFetched && vacatedResidents && vacatedResidents.length > 0 ? (
+                <div>
+                {vacatedResidents.map((ele) => (
+                    <div key={ele._id}>
+                    <li>
+                        {ele.name} <button onClick={() => handleShowDetails(ele)}>Show</button>
+                    </li>
+                    </div>
+                ))}
+                </div>
+            ) : isFetched ? (
+                <p>{vacatedResidents.message || "No vacated residents found"}</p>
+            ) : null}
 
             {selectedResident && (
                 <div>
@@ -52,7 +64,7 @@ const VacatedResidents = (props) => {
                 </div>
             )}
 
-            <Link to="/admindashboard">Cancel</Link>
+            <Link to = {`/admindashboard/${pgDetailsId}`}>Cancel</Link>
         </div>
     )
 }

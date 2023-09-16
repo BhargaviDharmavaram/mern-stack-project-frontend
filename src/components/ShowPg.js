@@ -96,7 +96,7 @@ const ShowPG = () => {
                         )
                     })}</p>
                     <p> <b> Available Rooms </b> </p>
-                    {availableRoomsForResident.map((room)=>{
+                    {availableRoomsForResident.length === 0 ? <p> No rooms are available now </p> : availableRoomsForResident.map((room)=>{
                         return(
                             <div key={room._id}>
                                 <li> Sharing : {room.sharing} - Room Number : {room.roomNumber} - Floor : {room.floor} </li>

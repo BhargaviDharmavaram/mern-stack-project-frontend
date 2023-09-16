@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { startCreateRoom } from '../actions/roomActions'
+import React, { useContext, useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useHistory, useParams } from 'react-router-dom';
+import { startCreateRoom, startGetUnAvailableRooms, startGetAllRooms, startGetAvailableRooms } from '../actions/roomActions'
 import { RoleContext } from './NavBar'
 
 const AddRoom = (props) => {
@@ -9,7 +10,17 @@ const AddRoom = (props) => {
     const [numRoomsToGenerate, setNumRoomsToGenerate] = useState('')
     const [generateRooms, setGenerateRooms] = useState([])
 
+    const { pgDetailsId } = useParams() // Use the useParams hook to get pgDetailsId
+    const history = useHistory() // Use the useHistory hook to access the history object
 
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        // Dispatch actions to get available rooms and all rooms on component mount
+        dispatch(startGetAvailableRooms(pgDetailsId))
+        dispatch(startGetAllRooms(pgDetailsId))
+        dispatch(startGetUnAvailableRooms(pgDetailsId))
+    }, [dispatch, pgDetailsId])
     const handleSharingChange = (e) => {
         setSharing(e.target.value)
     }
@@ -34,12 +45,6 @@ const AddRoom = (props) => {
         }
         setGenerateRooms(updatedRooms)
     }
-
-    const pgDetailsId = useSelector((state) => {
-        return state.pgDetails.pgDetails.map((ele) => ele._id).join(',')
-    })
-
-    const dispatch = useDispatch()
 
   
     const handleSubmit = async (e) => {
@@ -66,6 +71,11 @@ const AddRoom = (props) => {
             console.error(e.message)
         }
         
+    }
+
+    const handleAddResidents = () => {
+        // Redirect to the "Add Resident" component for the selected PG
+        history.push(`/addresident/${pgDetailsId}`)
     }
 
     return (
@@ -129,6 +139,7 @@ const AddRoom = (props) => {
                         }
                         <button type="submit">Submit</button>
                     </form>
+                    <button onClick={handleAddResidents}>Add Residents</button>
                 </div>
             }   
         </div>

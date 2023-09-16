@@ -14,9 +14,9 @@ export const startCreateRoom = (formData, pgDetailsId, reset) => {
             })
             console.log('room-added',response.data)
             // Check if there are rooms in the response
-            if (response.data.rooms && response.data.rooms.length > 0) {
+            if (response.data&& response.data.length > 0) {
                 // reduce to accumulate room details into a single string
-                const roomDetails = response.data.rooms.reduce((details, room, index) => {
+                const roomDetails = response.data.reduce((details, room, index) => {
                     details += `Room ${index + 1} Details:\n`
                     details += `Sharing: ${room.sharing}\n`
                     details += `Room Number: ${room.roomNumber}\n`
@@ -24,14 +24,12 @@ export const startCreateRoom = (formData, pgDetailsId, reset) => {
                     return details
                 }, '')
 
-                // Create a message that includes the success message from the response, room count, and room details
-                const message = `${response.data.message}\n\n`
-
+                
                 // Show a Swal popup with the room details
                 Swal.fire({
-                    title: message,
+                    title: "Rooms added successfully",
                     icon: 'success',
-                    html : `${response.data.rooms.length} Room(s) Added\n\n <br><br>${roomDetails}`,
+                    html : `${response.data.length} Room(s) Added\n\n <br><br>${roomDetails}`,
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'OK',
                 })
@@ -61,10 +59,10 @@ export const createRoom = (data) => {
     }
 }
 
-export const startGetAllRooms = () => {
+export const startGetAllRooms = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get('http://localhost:3800/api/rooms/allRooms', {
+            const response = await axios.get(`http://localhost:3800/api/rooms/allRooms?pgDetailsId=${pgDetailsId}`, {
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
@@ -84,10 +82,10 @@ export const getAllRooms = (data) => {
     }
 }
 
-export const startGetAvailableRooms = () => {
+export const startGetAvailableRooms = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get('http://localhost:3800/api/rooms/availableRooms', {
+            const response = await axios.get(`http://localhost:3800/api/rooms/availableRooms?pgDetailsId=${pgDetailsId}`, {
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
@@ -130,10 +128,10 @@ export const getAvailableRoomsForResident = (data) => {
     }
 }
 
-export const startGetUnAvailableRooms = () => {
+export const startGetUnAvailableRooms = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get('http://localhost:3800/api/rooms/unAvailableRooms', {
+            const response = await axios.get(`http://localhost:3800/api/rooms/unAvailableRooms?pgDetailsId=${pgDetailsId}`, {
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
@@ -176,7 +174,7 @@ export const showSingleRoom = (data) => {
     }
 }
 
-export const startRemoveRoom = (roomId) => {
+export const startRemoveRoom = (roomId, pgDetailsId) => {
     return async (dispatch) => {
       try {
         // Display the confirmation dialog
@@ -196,7 +194,7 @@ export const startRemoveRoom = (roomId) => {
         }
   
         // If the user clicked "OK," proceed with room removal
-        const response = await axios.delete(`http://localhost:3800/api/rooms/destroyRoom/${roomId}`, {
+        const response = await axios.delete(`http://localhost:3800/api/rooms/destroyRoom/${roomId}?pgDetailsId=${pgDetailsId}`, {
           headers: {
             'x-auth': localStorage.getItem('token'),
           },
@@ -204,7 +202,7 @@ export const startRemoveRoom = (roomId) => {
   
         console.log('remove-room-res', response.data)
         // Check if the response contains a warning message
-        if (response.data.message && response.data.message.startsWith('Cannot delete room')) {
+        if (response.data.message && response.data.message.startsWith('Cannot delete room.')) {
           // Show a Swal warning with the error message from the server
           Swal.fire({
             icon: 'warning',
@@ -213,6 +211,11 @@ export const startRemoveRoom = (roomId) => {
           })
         } else {
           // Dispatch the removeRoom action with the response data
+          Swal.fire({
+            icon: 'success',
+            title: 'Room deleted successfully',
+            text: response.data.message,
+          })
           dispatch(removeRoom(response.data))
         }
       } catch (e) {
@@ -220,7 +223,6 @@ export const startRemoveRoom = (roomId) => {
       }
     }
 }
-  
 
 export const removeRoom = (data) => {
     return{

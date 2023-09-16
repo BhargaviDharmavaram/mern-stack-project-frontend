@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { startCreateResident, startEditResident} from '../actions/residentsActions'
+import { useParams } from 'react-router-dom';
+import { startCreateResident, startEditResident, startGetResidents} from '../actions/residentsActions'
 import AccountConfirmationLink from './AccountConfirmationLink'
 import axios from 'axios'
 import { RoleContext } from './NavBar'
 
-const AddResident = ({editResident}) => {
+const AddResident = (props) => {
+    const {editResident} = props
     const {role} = useContext(RoleContext)
     const [name, setName] = useState('')
     const [profileImage, setProfileImage] = useState(null)
@@ -20,6 +22,14 @@ const AddResident = ({editResident}) => {
 
     const profileImageInputRef = useRef(null)
     const aadharCardInputRef = useRef(null)
+
+    const { pgDetailsId } = useParams() // Get the pgDetailsId from the URL parameters
+
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        dispatch(startGetResidents(pgDetailsId))
+    },[dispatch, pgDetailsId])
     
     
     // Handle input change for text fields
@@ -64,11 +74,6 @@ const AddResident = ({editResident}) => {
         }
     }
 
-    const pgDetailsId = useSelector((state) => {
-        return state.pgDetails.pgDetails.map((ele) => ele._id).join(',')
-    })
-    console.log('pgDetailsId', pgDetailsId)
-
     useEffect(() => {
         axios
             .get(`http://localhost:3800/api/rooms/availableRooms?pgDetailsId=${pgDetailsId}`, {
@@ -92,7 +97,6 @@ const AddResident = ({editResident}) => {
     const residentId = residents.length > 0 ? residents[residents.length - 1]._id : null
     console.log('residentId', residentId)
 
-    const dispatch = useDispatch()
     
     useEffect(() => {
         // If `editResident` has data, it means you are editing an existing resident.

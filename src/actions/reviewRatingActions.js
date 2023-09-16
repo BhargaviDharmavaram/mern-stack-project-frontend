@@ -40,10 +40,10 @@ export const addReview = (data) => {
     }
 }
 
-export const startGetAllReviewsForPGAdmin = () => {
+export const startGetAllReviewsForPGAdmin = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get(`http://localhost:3800/api/reviews-ratings/allReviewsForAdmin`, {
+            const response = await axios.get(`http://localhost:3800/api/reviews-ratings/allReviewsForAdmin/${pgDetailsId}`, {
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }

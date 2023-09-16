@@ -14,7 +14,7 @@ import PaymentPage from "./PaymentPage"
 import ResidentDashBoard from "./ResidentDashboard"
 import VacatedResidents from "./VacatedResidents"
 import ShowPG from "./ShowPg"
-//import SelectPg from "./SelectPg"
+import SelectPg from "./SelectPg"
 
 export const RoleContext = createContext()
 
@@ -87,15 +87,15 @@ const NavBar = (props) => {
                             handleAuth = {handleAuth}
                         />
                     }} />
-                {/* <Route path = '/selectpg' component = {SelectPg} /> */}
+                <Route path = '/selectpg' component = {SelectPg} />
                 <Route path = '/account' component={Account} />
                 <Route path = '/addpg' component = {AddPG}/>
-                <Route path = '/addroom' component = {AddRoom} />
-                <Route path = '/addresident' component = {AddResident} />
+                <Route path="/addroom/:pgDetailsId" component={AddRoom} />
+                <Route path = "/addresident/:pgDetailsId" component={AddResident} />
                 <Route path = "/confirm" component={ConfirmResident} />
                 <Route path="/payment/:razorPayId" component = {PaymentPage} />
-                <Route path = '/admindashboard' component = {AdminDashBoard} />
-                <Route path="/vacated-residents" component={VacatedResidents} />
+                <Route path = '/admindashboard/:pgDetailsId' component = {AdminDashBoard} />
+                <Route path="/vacated-residents/:pgDetailsId" component={VacatedResidents} />
                 <Route path = '/residentdashboard' component = {ResidentDashBoard} />
                 <Route path= "/showPg/:pgDetailsId" component={ShowPG} />
             </RoleContext.Provider>

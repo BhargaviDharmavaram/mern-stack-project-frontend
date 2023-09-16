@@ -1,8 +1,8 @@
 import axios from "axios"
-export const startGetCompletedPayments = () => {
+export const startGetCompletedPayments = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get('http://localhost:3800/api/payments/getCompletedPayments',{
+            const response = await axios.get(`http://localhost:3800/api/payments/getCompletedPayments/${pgDetailsId}`,{
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
@@ -21,10 +21,10 @@ export const getCompletedPayments = (data) => {
     }
 }
 
-export const startGetPendingPayments = () => {
+export const startGetPendingPayments = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get('http://localhost:3800/api/payments/getPendingPayments',{
+            const response = await axios.get(`http://localhost:3800/api/payments/getPendingPayments/${pgDetailsId}`,{
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
@@ -44,10 +44,10 @@ export const getPendingPayments = (data) => {
 }
 
 // Async action creator to fetch total completed payments amount
-export const startGetCompletedPaymentsTotal = () => {
+export const startGetCompletedPaymentsTotal = (pgDetailsId) => {
     return async (dispatch) => {
         try {
-            const response = await axios.get('http://localhost:3800/api/payments/getCompletedPaymentsTotal', {
+            const response = await axios.get(`http://localhost:3800/api/payments/getCompletedPaymentsTotal/${pgDetailsId}`, {
                 headers: {
                     'x-auth': localStorage.getItem('token')
                 }
@@ -67,10 +67,10 @@ export const getCompletedPaymentsTotal = (totalAmount) => {
     }
 }
 
-export const startGetPendingPaymentsTotal = () => {
+export const startGetPendingPaymentsTotal = (pgDetailsId) => {
     return async (dispatch) => {
         try {
-            const response = await axios.get('http://localhost:3800/api/payments/getPendingPaymentsTotal', {
+            const response = await axios.get(`http://localhost:3800/api/payments/getPendingPaymentsTotal/${pgDetailsId}`, {
                 headers: {
                     'x-auth': localStorage.getItem('token')
                 }

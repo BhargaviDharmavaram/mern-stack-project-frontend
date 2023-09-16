@@ -2,20 +2,19 @@ import React, { useContext, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { startGetSingleResident, startRemoveResident } from "../actions/residentsActions"
 import { RoleContext } from "./NavBar"
-
-
+import { useParams } from "react-router-dom"
 import AddResident from "./AddResidentForm"
 
 const ResidentsDetails = (props) => {
     const { role } = useContext(RoleContext)
+
+    const {pgDetailsId} = useParams()
 
     const [showModal, setShowModal] = useState(false)
     const [editResident, setEditResident] = useState(null)
 
     const residents = useSelector((state) => state.residents.residents)
 
-    const pgDetailsId = useSelector((state) => state.pgDetails.pgDetails.map((ele) => ele._id).join(','))
-    console.log(pgDetailsId)
 
     const selectedResident = useSelector((state) => state.residents.selectedResident)
     console.log('selectedResident' , selectedResident)
@@ -35,7 +34,7 @@ const ResidentsDetails = (props) => {
     const handleRemoveResident = (residentId) => {
         const confirmation = window.confirm('Are you sure?')
         if (confirmation) {
-            dispatch(startRemoveResident(residentId))
+            dispatch(startRemoveResident(pgDetailsId,residentId))
         }
     }
 

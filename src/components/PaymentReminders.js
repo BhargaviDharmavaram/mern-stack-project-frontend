@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const PaymentReminders = () => {
@@ -7,9 +7,7 @@ const PaymentReminders = () => {
     const [isError, setIsError] = useState(false)
     const [message, setMessage] = useState("")
 
-    const pgDetailsId = useSelector((state) => {
-        return state.pgDetails.pgDetails.map((ele) => ele._id).join(",")
-    })
+    const {pgDetailsId} = useParams()
     console.log('pgId', pgDetailsId)
 
     const sendPaymentReminders = async () => {

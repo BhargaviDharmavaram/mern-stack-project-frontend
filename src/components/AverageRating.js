@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Rating from "react-rating";
 import { Button, Offcanvas, OffcanvasHeader, OffcanvasBody } from "reactstrap";
+import { useParams } from "react-router-dom";
 import ShowPGReviews from "./ShowPGReviews";
 
 const AverageRating = (props) => {
@@ -9,10 +10,12 @@ const AverageRating = (props) => {
     const [averageRating, setAverageRating] = useState({})
     const [errorMessage, setErrorMessage] = useState("") // State variable for error message
 
+    const {pgDetailsId} = useParams()
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:3800/api/reviews-ratings/averageRating", {
+                const response = await axios.get(`http://localhost:3800/api/reviews-ratings/averageRating/${pgDetailsId}`, {
                     headers: {
                         "x-auth": localStorage.getItem("token"),
                     },
@@ -31,7 +34,7 @@ const AverageRating = (props) => {
         }
 
         fetchData()
-    }, [])
+    }, [pgDetailsId])
 
     // Function to handle cancellation and show "Get Reviews" button again
     const handleCancel = () => {

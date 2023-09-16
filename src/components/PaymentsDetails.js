@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import CompletedPayments from "./CompletedPayments";
 import PendingPayments from "./PendingPayments";
-import { useDispatch, useSelector } from "react-redux";
-import { startGetCompletedPaymentsTotal, startGetPendingPaymentsTotal } from "../actions/paymentActions";
+import { useDispatch, useSelector} from "react-redux";
+import { useParams } from "react-router-dom";
+import { startGetCompletedPaymentsTotal, startGetCompletedPayments, startGetPendingPayments, startGetPendingPaymentsTotal } from "../actions/paymentActions";
 
 const PaymentDetails = (props) => {
+    const {pgDetailsId} = useParams()
     const completedPaymentsTotal = useSelector((state)=>{
         return state.payments.completedPaymentsTotal
     })
@@ -15,9 +17,11 @@ const PaymentDetails = (props) => {
     console.log('pending-total', pendingPaymentsTotal)
     const dispatch = useDispatch()
     useEffect(()=>{
-        dispatch(startGetCompletedPaymentsTotal())
-        dispatch(startGetPendingPaymentsTotal())
-    }, [dispatch])
+        dispatch(startGetCompletedPayments(pgDetailsId))
+        dispatch(startGetPendingPayments(pgDetailsId))
+        dispatch(startGetCompletedPaymentsTotal(pgDetailsId))
+        dispatch(startGetPendingPaymentsTotal(pgDetailsId))
+    }, [dispatch,pgDetailsId])
 
     return (
         <div>

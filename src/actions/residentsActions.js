@@ -1,4 +1,5 @@
 import axios from "axios"
+import Swal from "sweetalert2"
 
 export const startCreateResident = (formData, pgDetailsId, reset) => {
     console.log(pgDetailsId)
@@ -12,6 +13,10 @@ export const startCreateResident = (formData, pgDetailsId, reset) => {
             console.log('resident-res', response.data)
             dispatch(addResident(response.data))
             reset()
+            Swal.fire({
+                icon : 'success',
+                title : 'Resident added successfully'
+            })
         }catch(e){
             alert(e.message)
         }
@@ -25,10 +30,10 @@ export const addResident = (data) => {
     }
 }
 
-export const startGetResidents = () => {
+export const startGetResidents = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get('http://localhost:3800/api/residents/getResidents', {
+            const response = await axios.get(`http://localhost:3800/api/residents/getResidents/${pgDetailsId}`, {
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
@@ -72,10 +77,10 @@ export const getSingleResident = (data) => {
     }
 }
 
-export const startRemoveResident = (residentId) => {
+export const startRemoveResident = (pgDetailsId,residentId) => {
     return async (dispatch)=> {
         try{
-            const response = await axios.delete(`http://localhost:3800/api/residents/destroyResident/${residentId}`, {
+            const response = await axios.delete(`http://localhost:3800/api/residents/destroyResident/${residentId}?pgDetailsId=${pgDetailsId}`, {
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
@@ -99,7 +104,7 @@ export const startEditResident = (residentId, formData, pgDetailsId, reset) => {
     return async (dispatch) => {
         try {
             const response = await axios.put(
-                `http://localhost:3800/api/residents/updateResident/${residentId}`,
+                `http://localhost:3800/api/residents/updateResident/${residentId}?pgDetailsId=${pgDetailsId}`,
                 formData,
                 {
                     headers: {
@@ -123,10 +128,10 @@ export const editResident = (data) => {
     }
 }
 
-export const startGetVacatedResidents = () => {
+export const startGetVacatedResidents = (pgDetailsId) => {
     return async (dispatch) => {
         try{
-            const response = await axios.get('http://localhost:3800/api/residents/admin/softDeletedResidents', {
+            const response = await axios.get(`http://localhost:3800/api/residents/admin/softDeletedResidents?pgDetailsId=${pgDetailsId}`, {
                 headers : {
                     'x-auth' : localStorage.getItem('token')
                 }
