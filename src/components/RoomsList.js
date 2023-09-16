@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { startShowSelectedRoom , startRemoveRoom, startGetAllRooms} from "../actions/roomActions";
 
 const RoomsList = (props) => {
+
+    const {pgDetailsId} = useParams()
+
     // State to control the modal's open/close state
     const [showModal, setShowModal] = useState(false)
     const rooms = useSelector((state) => {
@@ -11,10 +15,6 @@ const RoomsList = (props) => {
 
     const sortedRooms = rooms.sort((a, b) => {
         return a.roomNumber - b.roomNumber
-    })
-
-    const pgDetailsId = useSelector((state) => {
-        return state.pgDetails.pgDetails.map((ele) => ele._id).join(",")
     })
 
     const selectedRoom = useSelector((state) => {
@@ -36,11 +36,11 @@ const RoomsList = (props) => {
 
     const handleRemoveRoom = (roomId) => {
         console.log('roomId-remove', roomId)
-        dispatch(startRemoveRoom(roomId))
+        dispatch(startRemoveRoom(roomId, pgDetailsId))
     }
     useEffect(()=>{
-        dispatch(startGetAllRooms())
-    }, [dispatch])
+        dispatch(startGetAllRooms(pgDetailsId))
+    }, [dispatch, pgDetailsId])
 
     return (
         <div>

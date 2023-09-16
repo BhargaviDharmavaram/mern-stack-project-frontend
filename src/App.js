@@ -3,15 +3,6 @@ import NavBar from './components/NavBar'
 import jwt_decode from 'jwt-decode'
 import { useDispatch } from 'react-redux';
 import { startGetAdminPgDetails, startGetListOfPgs } from './actions/pgDetailsActions';
-import { startGetResidents } from './actions/residentsActions';
-import { startGetAllRooms, startGetAvailableRooms, startGetUnAvailableRooms } from './actions/roomActions';
-import {
-  startGetCompletedPayments,
-  startGetCompletedPaymentsTotal,
-  startGetPendingPayments,
-  startGetPendingPaymentsTotal,
-} from './actions/paymentActions';
-import { startGetAllReviewsForPGAdmin } from './actions/reviewRatingActions';
 
 const App = (props) => {
     const [userLoggedIn, setUserLoggedIn] = useState(false)
@@ -31,16 +22,7 @@ const App = (props) => {
             setRole(userRole)
 
             if (userRole === 'pg_admin'){ 
-                dispatch(startGetAdminPgDetails())
-                dispatch(startGetResidents())
-                dispatch(startGetAllRooms())
-                dispatch(startGetAvailableRooms())
-                dispatch(startGetUnAvailableRooms())
-                dispatch(startGetCompletedPayments())
-                dispatch(startGetPendingPayments())
-                dispatch(startGetCompletedPaymentsTotal())
-                dispatch(startGetPendingPaymentsTotal())  
-                dispatch(startGetAllReviewsForPGAdmin())   
+                dispatch(startGetAdminPgDetails())  
             }
             if (userRole === 'pg_resident') {
                 dispatch(startGetListOfPgs())

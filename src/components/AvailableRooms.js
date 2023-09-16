@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
 import {  useDispatch, useSelector } from "react-redux";
 import { startGetAvailableRooms } from "../actions/roomActions";
+import { useParams } from "react-router-dom";
 
 const AvailableRooms = (props) => {
+
+    const {pgDetailsId} = useParams()
+
     const availableRooms = useSelector((state) => {
         return state.rooms.availableRooms
     })
@@ -14,8 +18,8 @@ const AvailableRooms = (props) => {
     })
     const dispatch = useDispatch()
     useEffect(()=>{
-        dispatch(startGetAvailableRooms())
-    }, [dispatch])
+        dispatch(startGetAvailableRooms(pgDetailsId))
+    }, [dispatch,pgDetailsId])
     
     return (
         <div>
