@@ -29,6 +29,10 @@ const AdminDashBoard = (props) => {
         <div>
             {role === 'pg_admin' && 
                 <div>
+                    <h4>AdminDashBoard</h4>
+                    <Link to = {`/addroom/${pgDetailsId}`}>Add Room</Link>
+                    <br />
+                    <Link to = {`/addresident/${pgDetailsId}`}>Add Resident</Link>
                     <AverageRating />
                     <ResidentsDetails />
                     <RoomDetails />

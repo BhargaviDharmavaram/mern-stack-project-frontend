@@ -52,7 +52,7 @@ const VacatedResidents = (props) => {
                     <h4>Vacated Resident Details</h4>
                     <p>Name: {selectedResident.name}</p>
                     <p>Profile Image</p>
-                    <img src={`http://localhost:3800/images/${selectedResident.aadharCard}`} width='200' height='200' alt="Profile" />
+                    <img src={`http://localhost:3800/images/${selectedResident.profileImage}`} width='200' height='200' alt="Profile" />
                     <p> Email : {selectedResident.email} </p>
                     <p> PhoneNumber : {selectedResident.phoneNumber} </p>
                     <p> Guardian Name : {selectedResident.guardianName}</p>

@@ -1,19 +1,27 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startGetAllReviewsForPGAdmin } from "../actions/reviewRatingActions";
 
 const ShowPGReviews = (props) =>{
-    const {handleCancel} = props
+    const {handleCancel, pgDetailsId} = props
+
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        dispatch(startGetAllReviewsForPGAdmin(pgDetailsId))
+    },[dispatch, pgDetailsId])
     const reviewsAndRatingsOfPg = useSelector((state)=>{
         return state.reviewsAndRatings.reviewsAndRatings
     })
     console.log('reviewsAndRatingsOfPg',reviewsAndRatingsOfPg)
+
 
     return(
         <div>
             {reviewsAndRatingsOfPg.map((ele)=>{
                 return(
                     <div key={ele._id}>
-                        <li>{ele.review} - {ele.residentId && ele.residentId.name} - {ele.createdAt.slice(0,10)}</li>
+                        <li> {ele.review} - {ele.residentName} - {ele.createdAt.slice(0,10)} </li>
                     </div>
                 )
             })}

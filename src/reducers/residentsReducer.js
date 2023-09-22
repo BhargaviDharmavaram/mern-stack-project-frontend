@@ -24,23 +24,18 @@ const residentsReducer = (state = initialState, action) =>{
             return { ...state, residents: updatedResidents }
         }
         case 'EDIT_RESIDENT': {
-            // Find the index of the edited resident in the state
-            const editedIndex = state.residents.findIndex(
-                (resident) => resident._id === action.payload._id
-            )
-
-            if (editedIndex !== -1) {
-                // Update the state by replacing the existing resident with the edited one
-                const updatedResidents = [...state.residents]
-                updatedResidents[editedIndex] = action.payload
-
-                return {
-                    ...state,
-                    residents: updatedResidents,
+            const updatedResident = state.residents.map((ele)=>{
+                if(ele._id === action.payload._id)
+                {
+                    return {...ele, ...action.payload}
+                }else{
+                    return {...ele}
                 }
-            }
-
-            return state
+            })
+            return {...state, residents : updatedResident}
+        }
+        case "CLEAR_SELECTED_RESIDENT" : {
+            return {...state, selectedResident : {}}
         }
         case "GET_VACATED_RESIDENTS" : {
             return {...state, vacatedResidents : action.payload}

@@ -35,7 +35,7 @@ const PGList = (props) => {
             <h1>List of PGs</h1>
             <input
                 type="text"
-                placeholder="Search by name or address"
+                placeholder = "Search by name or address"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
             />

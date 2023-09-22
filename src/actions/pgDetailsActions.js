@@ -103,3 +103,59 @@ export const getShowPG = (data) => {
         payload : data
     }
 }
+
+export const startEditPg = (pgDetailsId,formData,reset) =>{
+    return async(dispatch) => {
+        try{
+            const response = await axios.put(`http://localhost:3800/api/pgdetails/updatePg/${pgDetailsId}`, formData, {
+                headers: {
+                    'x-auth': localStorage.getItem('token')
+                }
+            })
+            console.log('res-edit-pg', response.data)
+            dispatch(editPg(response.data))   
+            reset()
+            Swal.fire({
+                title:'PG successfully edited',
+                icon :'success'
+            })
+        }catch(e){
+            alert(e.message)
+        }
+    }
+}
+
+export const editPg = (data) => {
+    return{
+        type : "EDIT_PG",
+        payload : data
+    }
+}
+
+
+export const startDestroyPg = (pgdetailsId) =>{
+    return async(dispatch) => {
+        try{
+            const response = await axios.delete(`http://localhost:3800/api/pgdetails/destroyPg/${pgdetailsId}`, {
+                headers: {
+                    'x-auth': localStorage.getItem('token')
+                }
+            })
+            console.log('res-destroy-pg', response.data)
+            dispatch(destroyPg(response.data._id))
+            Swal.fire({
+                title:'PG successfully deleted',
+                icon :'success'
+            })
+        }catch(e){
+            alert(e.message)
+        }
+    }
+}
+
+export const destroyPg = (pgDetailsId) => {
+    return{
+        type : "DESTROY_PG",
+        payload : pgDetailsId
+    }
+}

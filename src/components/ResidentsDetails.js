@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { startGetSingleResident, startRemoveResident } from "../actions/residentsActions"
 import { RoleContext } from "./NavBar"
-import { useParams } from "react-router-dom"
-import AddResident from "./AddResidentForm"
+import { useParams, useHistory } from "react-router-dom"
+// import AddResident from "./AddResidentForm"
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
 
 const ResidentsDetails = (props) => {
     const { role } = useContext(RoleContext)
@@ -11,7 +12,12 @@ const ResidentsDetails = (props) => {
     const {pgDetailsId} = useParams()
 
     const [showModal, setShowModal] = useState(false)
-    const [editResident, setEditResident] = useState(null)
+    
+    useEffect(()=>{
+        dispatch(
+            {type : "CLEAR_SELECTED_RESIDENT"}
+        )
+    }, [])
 
     const residents = useSelector((state) => state.residents.residents)
 
@@ -38,12 +44,11 @@ const ResidentsDetails = (props) => {
         }
     }
 
+    const history = useHistory() 
+
     const handleEditResident = (residentId) => {
-        // Set the selected resident as the editResident
-        const selectedResident = residents.find((resident) => resident._id === residentId)
-        if (selectedResident) {
-            setEditResident(selectedResident)
-        }
+        // Navigate to the EditResident component with the resident's id as a parameter
+        history.push(`/editresident/${pgDetailsId}/${residentId}`)
     }
 
     return (
@@ -69,48 +74,45 @@ const ResidentsDetails = (props) => {
                             </div>
                         ))}
                     </ul>
-                    <div className="modal" tabIndex="-1" role="dialog" style={{ display: showModal ? "block" : "none" }}>
-                        <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">Resident Details</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    {selectedResident && (
-                                        <ul>
-                                            <li> Name: {selectedResident.name}</li>
-                                            <li> Email: {selectedResident.email}</li>
-                                            <li> PhoneNumber : {selectedResident.phoneNumber} </li>
-                                            <li> Date Of Joining : {selectedResident.dateOfJoining && selectedResident.dateOfJoining.slice(0,10)}</li>
-                                            <li> Guardian Name : {selectedResident.guardianName} </li>
-                                            <li> Guardian Number : {selectedResident.guardianNumber} </li>
-                                            <li> Address : {selectedResident.address} </li>
-                                            <ul> Room Details : 
-                                                <li> Sharing : {selectedResident.roomId && selectedResident.roomId.sharing} </li>
-                                                <li> Room Number : { selectedResident.roomId && selectedResident.roomId.roomNumber}</li>
-                                                <li>Floor : {selectedResident.roomId && selectedResident.roomId.floor}</li>
-                                            </ul>
-                                            {selectedResident.aadharCard && (
-                                            <div>
-                                                <p>Aadhar Card:</p>
-                                                <img src={`http://localhost:3800/images/${selectedResident.aadharCard}`} width='200' height='200' alt="Aadhar" />
-                                            </div>
-                                            )}
-                                        </ul>
-                                    )}
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>
-                                        Close
-                                    </button>
-                                </div>
+                    <Modal isOpen={showModal} toggle={closeModal}>
+                    <ModalHeader toggle={closeModal}>Resident Details</ModalHeader>
+                    <ModalBody>
+                        {selectedResident && (
+                        <ul>
+                            <li>Name: {selectedResident.name}</li>
+                            <li>Email: {selectedResident.email}</li>
+                            <li>PhoneNumber: {selectedResident.phoneNumber}</li>
+                            <li>Date Of Joining: {selectedResident.dateOfJoining && selectedResident.dateOfJoining.slice(0, 10)}</li>
+                            <li>Guardian Name: {selectedResident.guardianName}</li>
+                            <li>Guardian Number: {selectedResident.guardianNumber}</li>
+                            <li>Address: {selectedResident.address}</li>
+                            <ul>
+                            Room Details:
+                            <li>Sharing: {selectedResident.roomId && selectedResident.roomId.sharing}</li>
+                            <li>Room Number: {selectedResident.roomId && selectedResident.roomId.roomNumber}</li>
+                            <li>Floor: {selectedResident.roomId && selectedResident.roomId.floor}</li>
+                            </ul>
+                            {selectedResident.aadharCard && (
+                            <div>
+                                <p>Aadhar Card:</p>
+                                <img
+                                src={`http://localhost:3800/images/${selectedResident.aadharCard}`}
+                                width="200"
+                                height="200"
+                                alt="Aadhar"
+                                />
                             </div>
-                        </div>
-                    </div>
-                    {editResident && <AddResident editResident={editResident} />}
+                            )}
+                        </ul>
+                        )}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="secondary" onClick={closeModal}>
+                        Close
+                        </Button>
+                    </ModalFooter>
+                    </Modal>
+                    {/* {editResident && <AddResident editResident={editResident} />} */}
                 </div>
             )}
         </div>
