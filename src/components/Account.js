@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { RoleContext } from "./NavBar";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Account = (props) => {
     const [residentPgDetails, setResidentPgDetails] = useState({})
@@ -39,15 +39,13 @@ const Account = (props) => {
     }
 
     return (
-        <>
-            <div>
+        <div className="container">
+            <div className="text-center">
                 <h1>User Account Details</h1>
                 <p>User Name - {user.username}</p>
                 <p>Email - {user.email}</p>
                 <p>Role - {user.role}</p>
-                {role === 'pg_admin' ?
-                    <Link to="/admindashboard">Go Back to Dashboard</Link>
-                    :
+                {role === 'pg_resident' &&
                     <>
                         <button onClick={() => handlePgDetails(user.id)}>Get PG Details</button>
                         {showDetails && // Show details only if showDetails is true
@@ -62,11 +60,11 @@ const Account = (props) => {
                                 <li>Floor Number: {residentPgDetails.roomId && residentPgDetails.roomId.floor}</li>
                             </div>
                         }
-                        <Link to="/residentdashboard">Go Back to Dashboard</Link>
                     </>
                 }
+                <Link to = "/">Home</Link>
             </div>
-        </>
+        </div>
     )
 }
 

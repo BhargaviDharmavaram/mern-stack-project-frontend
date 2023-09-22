@@ -111,17 +111,13 @@ const ShowPG = () => {
                             {allReviewsForPG.map((review) => (
                             <div key={review._id}>
                                 <li>
-                                {review.review} -- {review.residentId && review.residentId.name}
+                                {review.review} -- {review.residentName}
                                 <button
                                     onClick={() => {
-                                    handleReviewEdit(review._id)
+                                        handleReviewEdit(review._id)
                                     }}
-                                >
-                                    Edit
-                                </button>
-                                <button onClick={() => handleReviewRemove(review._id)}>
-                                    Remove
-                                </button> <br />
+                                > Edit </button>
+                                <button onClick={() => handleReviewRemove(review._id)}> Remove </button> <br />
                                 Food : {review.rating && review.rating.food} <br />
                                 Safety : {review.rating && review.rating.safety} <br />
                                 Hygienic : {review.rating && review.rating.hygienic} <br />

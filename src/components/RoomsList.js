@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams,useHistory } from "react-router-dom";
 import { startShowSelectedRoom , startRemoveRoom, startGetAllRooms} from "../actions/roomActions";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+
 
 const RoomsList = (props) => {
 
     const {pgDetailsId} = useParams()
+
+    const dispatch = useDispatch()
+
+    const history = useHistory()
+
+    useEffect(()=>{
+        dispatch(startGetAllRooms(pgDetailsId))
+    }, [dispatch, pgDetailsId])
+
 
     // State to control the modal's open/close state
     const [showModal, setShowModal] = useState(false)
@@ -20,8 +31,6 @@ const RoomsList = (props) => {
     const selectedRoom = useSelector((state) => {
         return state.rooms.selectedRoom
     })
-
-    const dispatch = useDispatch()
 
     const handleShowRoom = (roomId) => {
         console.log('roomId-show', roomId)
@@ -38,10 +47,11 @@ const RoomsList = (props) => {
         console.log('roomId-remove', roomId)
         dispatch(startRemoveRoom(roomId, pgDetailsId))
     }
-    useEffect(()=>{
-        dispatch(startGetAllRooms(pgDetailsId))
-    }, [dispatch, pgDetailsId])
-
+    
+    const handleEditRoom = (roomId) => {
+        // Navigate to the edit page with roomId as a route parameter
+        history.push(`/edit-room/${pgDetailsId}/${roomId}`)
+    }
     return (
         <div>
             <h2>Total Rooms - {rooms.length}</h2>
@@ -50,56 +60,36 @@ const RoomsList = (props) => {
                     <div key={room._id}>
                         <li key={room._id}> Room Number : {room.roomNumber} </li>
                         <button onClick={() => handleShowRoom(room._id)}>Show</button>
-                        <button>Edit</button>
+                        <button onClick={() => handleEditRoom(room._id)}>Edit</button>
                         <button onClick={() => handleRemoveRoom(room._id)}>Remove</button>
                     </div>
                 )
             })}
 
             
-            <div
-                className={`modal fade ${showModal ? "show" : ""}`}
-                style={{ display: showModal ? "block" : "none" }}
-                tabIndex="-1"
-                role="dialog"
-                aria-labelledby="selectedRoomModal"
-                aria-hidden={!showModal}
-            >
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="selectedRoomModal">
-                                Room Details
-                            </h5>
-                            <button
-                                type="button"
-                                className="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                                onClick={closeModal}
-                            >
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            {selectedRoom && (
-                                <div>
-                                    <p> Room Number: {selectedRoom.roomNumber}</p>
-                                    <p> Sharing : {selectedRoom.sharing}</p>
-                                    <p> Floor : {selectedRoom.floor} </p>
-                                </div>
-                            )}
-                        </div>
-                        <div className="modal-footer">
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={closeModal}
-                        > Close </button>
+            <Modal isOpen={showModal} toggle={closeModal}>
+                <ModalHeader toggle={closeModal}>Room Details</ModalHeader>
+                <ModalBody>
+                    {selectedRoom && (
+                    <div>
+                        <p>Room Number: {selectedRoom.roomNumber}</p>
+                        <p>Sharing: {selectedRoom.sharing}</p>
+                        <p>Floor: {selectedRoom.floor}</p>
                     </div>
-                    </div>
-                </div>
-            </div>
+                    )}
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={closeModal}>
+                    Close
+                    </Button>
+                </ModalFooter>
+            </Modal>
+            {/* {editingRoom && (
+            <EditRoom
+                selectedRoom={editingRoom}
+                onCancel={handleCancelEdit}
+            />
+            )} */}
         </div>
     )
 }

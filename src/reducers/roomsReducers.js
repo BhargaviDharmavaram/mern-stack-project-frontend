@@ -35,6 +35,39 @@ const roomsReducer = (state = initialState, action) => {
         case "GET_AVAILABLE_ROOMS_FOR_RESIDENT" : {
             return {...state , availableRoomsForResident : action.payload}
         }
+        case "EDIT_ROOM" : {
+            const updatedRoom = state.rooms.map((ele)=>
+            {
+                if(ele._id === action.payload._id)
+                {
+                    return {...ele, ...action.payload}
+                }else{
+                    return {...ele}
+                }
+            })
+            const updatedAvailableRoom = state.availableRooms.map((ele)=>
+            {
+                if(ele._id === action.payload._id)
+                {
+                    return {...ele, ...action.payload}
+                }else{
+                    return {...ele}
+                }
+            })
+            const updatedUnAvailableRoom = state.unAvailableRooms.map((ele)=>
+            {
+                if(ele._id === action.payload._id)
+                {
+                    return {...ele, ...action.payload}
+                }else{
+                    return {...ele}
+                }
+            })
+            return {...state, rooms : updatedRoom, availableRooms : updatedAvailableRoom, unAvailableRooms : updatedUnAvailableRoom}
+        }
+        // case "CLEAR_SELECTED_ROOM" : {
+        //     return  {...state,selectedRoom : {}}
+        // }
         default : {
             return {...state}
         }

@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import axios from "axios"
 import Swal from "sweetalert2"
 import { useParams, useHistory } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const AccountConfirmationLink = (props) => {
     const [email, setEmail] = useState('')
@@ -52,19 +53,37 @@ const AccountConfirmationLink = (props) => {
         }
     } 
 
-    const handleGoToDashBoard = () => {
+    const handleGoToAdminDashboard = () => {
         history.push(`/admindashboard/${pgDetailsId}`)
     }
     return(
         <div>
             <form onSubmit={handleSubmit}>
-                <h1>Send Confirmation Account Link</h1>
-                <label>Enter Email</label>
-                <input type = "text"  value = {email} name = 'email' onChange={(e) =>setEmail(e.target.value)}/>
-                <input type = "submit" value = 'Send Confirmation Link' />
-            </form>
-
-            <button onClick={handleGoToDashBoard}>Go to DashBoard</button>
+                <h5>Send Confirmation Account Link</h5>
+                <label>Enter Email</label><br/>
+                <input type = "text" value = {email} name = 'email' onChange={(e) =>setEmail(e.target.value)} style={{ marginBottom: '10px' }}/> <br/>                
+                <input type = "submit" value = 'Send Confirmation Link' style={{
+                  margin: '5px',
+                  padding: '10px',
+                  backgroundColor: '#F46C28',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px'
+                }} /> <br />
+            </form><br/>
+            <button
+              onClick={handleGoToAdminDashboard}
+              style={{
+                margin: '5px',
+                padding: '10px',
+                backgroundColor: '#64B2E4',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px'
+              }}
+            >
+              <FaArrowLeft style={{ marginRight: '5px' }} /> Go to Admin Dashboard
+            </button>
         </div>
     )
 }

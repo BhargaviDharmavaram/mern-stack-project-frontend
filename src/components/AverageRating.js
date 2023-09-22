@@ -76,7 +76,7 @@ const AverageRating = (props) => {
                         </Button>
                     </OffcanvasHeader>
                     <OffcanvasBody>
-                        <ShowPGReviews handleCancel={handleCancel} />
+                        <ShowPGReviews handleCancel={handleCancel} pgDetailsId={pgDetailsId} />
                     </OffcanvasBody>
                 </Offcanvas>
             )}

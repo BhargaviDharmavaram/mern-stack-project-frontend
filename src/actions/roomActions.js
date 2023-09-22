@@ -230,3 +230,27 @@ export const removeRoom = (data) => {
         payload : data
     }
 }
+
+export const startEditRoom = (roomId, pgDetailsId, updatedRoom, reset) => {
+    return async (dispatch) => {
+        try{
+            const response = await axios.put(`http://localhost:3800/api/rooms/updateRoom/${roomId}?pgDetailsId=${pgDetailsId}`, updatedRoom , {
+                headers : {
+                    'x-auth' : localStorage.getItem('token')
+                }
+            })
+            console.log(response.data)
+            dispatch(editRoom(response.data))
+            reset()
+        }catch(e){
+            alert(e.message)
+        }
+    }
+}
+
+export const editRoom = (data) => {
+    return {
+        type : "EDIT_ROOM",
+        payload : data
+    }
+}

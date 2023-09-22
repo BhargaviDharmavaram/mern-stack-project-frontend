@@ -100,7 +100,7 @@ export const removeResident = (data) => {
 }
 
 
-export const startEditResident = (residentId, formData, pgDetailsId, reset) => {
+export const startEditResident = (formData, pgDetailsId, residentId, reset) => {
     return async (dispatch) => {
         try {
             const response = await axios.put(
@@ -115,6 +115,10 @@ export const startEditResident = (residentId, formData, pgDetailsId, reset) => {
             console.log('edit-resident-res', response.data)
             dispatch(editResident(response.data))
             reset()
+            Swal.fire({
+                icon : 'success',
+                title : 'Resident updated successfully'
+            })
         } catch (e) {
             alert(e.message)
         }
