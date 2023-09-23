@@ -112,18 +112,25 @@ const SelectPg = (props) =>{
                         {pg.name}
                     </label>
                     </div>
-                    <button
-                    style={{ backgroundColor: 'green',color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', marginRight: '10px' }}
+                    {/* <button style={{ backgroundColor: 'green',color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', marginRight: '10px' }}
                     onClick={() => handleEdit(pg._id)}
                     >
                     <FaEdit /> Edit
-                    </button>
-                    <button
+                    </button> */}
+                    {/* <button
                     style={{ backgroundColor: 'red',color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px' }}
                     onClick={() => handleRemove(pg._id)}
                     >
                     <FaTrash /> Remove
-                    </button>
+                    </button> */}
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className="icon-button" style={{ marginRight: "10px" }}>
+                            <FaEdit onClick={() => handleEdit(pg._id)} style={{ color: "blue" }} /><span>Edit</span>
+                        </div>
+                        <div className="icon-button">
+                            <FaTrash onClick={() => handleRemove(pg._id)} style={{ color: "red" }} /><span>Remove</span>
+                        </div>
+                    </div>
                 </div>
                 ))}
                 <button className="btn btn-primary" style={{marginTop : '10px'}} onClick={handleNext} disabled={!selectedPg}> Next </button>

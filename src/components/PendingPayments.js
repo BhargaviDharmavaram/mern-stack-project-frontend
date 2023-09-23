@@ -16,7 +16,7 @@ const PendingPayments = (props) => {
     }, [dispatch, pgDetailsId])
     return (
         <div>
-            <h3>Pending Payments - {pendingPayments.length} </h3>
+            <h4>Pending Payments - {pendingPayments.length} </h4>
             {pendingPayments.map((ele)=>{
                 return(
                     <div key={ele._id}>

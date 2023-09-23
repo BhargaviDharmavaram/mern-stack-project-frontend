@@ -1,97 +1,87 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams,useHistory } from "react-router-dom";
-import { startShowSelectedRoom , startRemoveRoom, startGetAllRooms} from "../actions/roomActions";
+import { useParams, useHistory } from "react-router-dom";
+import { startShowSelectedRoom, startRemoveRoom, startGetAllRooms } from "../actions/roomActions";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
-
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 const RoomsList = (props) => {
+    const { pgDetailsId } = useParams();
+    const dispatch = useDispatch();
+    const history = useHistory();
 
-    const {pgDetailsId} = useParams()
+    useEffect(() => {
+        dispatch(startGetAllRooms(pgDetailsId));
+    }, [dispatch, pgDetailsId]);
 
-    const dispatch = useDispatch()
+    const [showModal, setShowModal] = useState(false);
+    const rooms = useSelector((state) => state.rooms.rooms);
 
-    const history = useHistory()
-
-    useEffect(()=>{
-        dispatch(startGetAllRooms(pgDetailsId))
-    }, [dispatch, pgDetailsId])
-
-
-    // State to control the modal's open/close state
-    const [showModal, setShowModal] = useState(false)
-    const rooms = useSelector((state) => {
-        return state.rooms.rooms
-    })
-
-    const sortedRooms = rooms.sort((a, b) => {
-        return a.roomNumber - b.roomNumber
-    })
-
-    const selectedRoom = useSelector((state) => {
-        return state.rooms.selectedRoom
-    })
+    const sortedRooms = rooms.sort((a, b) => a.roomNumber - b.roomNumber);
+    const selectedRoom = useSelector((state) => state.rooms.selectedRoom);
 
     const handleShowRoom = (roomId) => {
-        console.log('roomId-show', roomId)
-        dispatch(startShowSelectedRoom(roomId, pgDetailsId))
-        setShowModal(true) // Show the modal when a room is selected
-    }
-
+        dispatch(startShowSelectedRoom(roomId, pgDetailsId));
+        setShowModal(true);
+    };
 
     const closeModal = () => {
-        setShowModal(false) // Close the modal when needed
-    }
+        setShowModal(false);
+    };
 
     const handleRemoveRoom = (roomId) => {
-        console.log('roomId-remove', roomId)
-        dispatch(startRemoveRoom(roomId, pgDetailsId))
-    }
-    
+        dispatch(startRemoveRoom(roomId, pgDetailsId));
+    };
+
     const handleEditRoom = (roomId) => {
-        // Navigate to the edit page with roomId as a route parameter
-        history.push(`/edit-room/${pgDetailsId}/${roomId}`)
-    }
+        history.push(`/edit-room/${pgDetailsId}/${roomId}`);
+    };
+
     return (
         <div>
-            <h2>Total Rooms - {rooms.length}</h2>
-            {sortedRooms.map((room) => {
-                return (
-                    <div key={room._id}>
-                        <li key={room._id}> Room Number : {room.roomNumber} </li>
-                        <button onClick={() => handleShowRoom(room._id)}>Show</button>
-                        <button onClick={() => handleEditRoom(room._id)}>Edit</button>
-                        <button onClick={() => handleRemoveRoom(room._id)}>Remove</button>
+        <h4 className="mb-3 text-center" style={{color: '#298384'}}>Total Rooms - {rooms.length}</h4>
+        <div className="card">
+            <div className="card-body" style={{ overflowY: "scroll", maxHeight: "400px" }}>
+                {sortedRooms.map((room) => (
+                    <div key={room._id} className="card mb-2">
+                        <div className="card-body">
+                            <h5 className="card-title">Room Number: {room.roomNumber}</h5>
+                            <div>
+                                <button className="icon-button" onClick={() => handleShowRoom(room._id)}>
+                                    <FaEye style={{ color: "blue" }} />
+                                </button>
+                                <button className="icon-button" onClick={() => handleEditRoom(room._id)}>
+                                    <FaEdit style={{ color: "green" }} />
+                                </button>
+                                <button className="icon-button" onClick={() => handleRemoveRoom(room._id)}>
+                                    <FaTrash style={{ color: "red" }} />
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                )
-            })}
+                ))}
+            </div>
 
-            
             <Modal isOpen={showModal} toggle={closeModal}>
                 <ModalHeader toggle={closeModal}>Room Details</ModalHeader>
                 <ModalBody>
                     {selectedRoom && (
-                    <div>
-                        <p>Room Number: {selectedRoom.roomNumber}</p>
-                        <p>Sharing: {selectedRoom.sharing}</p>
-                        <p>Floor: {selectedRoom.floor}</p>
-                    </div>
+                        <div>
+                            <p>Room Number: {selectedRoom.roomNumber}</p>
+                            <p>Sharing: {selectedRoom.sharing}</p>
+                            <p>Floor: {selectedRoom.floor}</p>
+                        </div>
                     )}
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={closeModal}>
-                    Close
+                        Close
                     </Button>
                 </ModalFooter>
             </Modal>
-            {/* {editingRoom && (
-            <EditRoom
-                selectedRoom={editingRoom}
-                onCancel={handleCancelEdit}
-            />
-            )} */}
         </div>
-    )
-}
+        </div>
+    );
+};
 
-export default RoomsList
+export default RoomsList;

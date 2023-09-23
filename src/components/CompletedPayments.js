@@ -15,7 +15,7 @@ const CompletedPayments = (props) => {
     }, [dispatch, pgDetailsId])
     return (
         <div>
-            <h3>Completed Payments - {completedPayments.length} </h3>
+            <h4>Completed Payments - {completedPayments.length} </h4>
             {completedPayments.map((ele)=>{
                 return(
                     <div key={ele._id}> 
