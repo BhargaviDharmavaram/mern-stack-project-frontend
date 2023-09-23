@@ -438,65 +438,65 @@ const AddResident = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const errors = {};
-
-        if (!name) {
-        errors.name = 'This field is required';
-        } else if (!validator.isLength(name, { min: 2, max: 255 })) {
-        errors.name = 'Invalid Name';
-        }
-
-        if (!email) {
-        errors.email = 'This field is required';
-        } else if (!validator.isEmail(email)) {
-        errors.email = 'Invalid Email';
-        }
-
-        if (!phoneNumber) {
-        errors.phoneNumber = 'This field is required';
-        } else if (!validator.isMobilePhone(phoneNumber, 'any', { strictMode: false })) {
-        errors.phoneNumber = 'Invalid Phone Number';
-        }
-
-        if (!guardianName) {
-        errors.guardianName = 'This field is required';
-        } else if (!validator.isLength(guardianName, { min: 2, max: 255 })) {
-        errors.guardianName = 'Invalid Guardian Name';
-        }
-
-        if (!guardianNumber) {
-        errors.guardianNumber = 'This field is required';
-        } else if (!validator.isMobilePhone(guardianNumber, 'any', { strictMode: false })) {
-        errors.guardianNumber = 'Invalid Guardian Number';
-        }
-
-        if (!address) {
-        errors.address = 'This field is required';
-        } else if (!validator.isLength(address, { min: 2, max: 255 })) {
-        errors.address = 'Invalid Address';
-        }
-
-        if (!roomId) {
-        errors.roomId = 'Please select a room';
-        }
-
-        // Validating profileImage
-        if (!profileImage) {
-        errors.profileImage = 'This field is required';
-        } else if (!['image/jpeg', 'image/png'].includes(profileImage.type)) {
-        errors.profileImage = 'Invalid Image Format (JPEG or PNG only)';
-        } else if (profileImage.size > 1024 * 1024) {
-        errors.profileImage = 'Image size should be less than 1MB';
-        }
-
-        // Validating aadharCard
-        if (!aadharCard) {
-        errors.aadharCard = 'This field is required';
-        } else if (!['image/jpeg', 'image/png'].includes(aadharCard.type)) {
-        errors.aadharCard = 'Invalid Image Format (JPEG or PNG only)';
-        } else if (aadharCard.size > 1024 * 1024) {
-        errors.aadharCard = 'Image size should be less than 1MB';
+        const errors = {}
+        if(!isEditingMode){
+            if (!name) {
+                errors.name = 'This field is required';
+            } else if (!validator.isLength(name, { min: 2, max: 28 })) {
+                errors.name = 'Invalid Name';
+            }
+        
+            if (!email) {
+                errors.email = 'This field is required';
+            } else if (!validator.isEmail(email)) {
+                errors.email = 'Invalid Email';
+            }
+        
+            if (!phoneNumber) {
+                errors.phoneNumber = 'This field is required';
+            } else if (!validator.isMobilePhone(phoneNumber, 'any', { strictMode: false })) {
+                errors.phoneNumber = 'Invalid Phone Number';
+            }
+        
+            if (!guardianName) {
+                errors.guardianName = 'This field is required';
+            } else if (!validator.isLength(guardianName, { min: 2, max: 255 })) {
+                errors.guardianName = 'Invalid Guardian Name';
+            }
+        
+            if (!guardianNumber) {
+                errors.guardianNumber = 'This field is required';
+            } else if (!validator.isMobilePhone(guardianNumber, 'any', { strictMode: false })) {
+                errors.guardianNumber = 'Invalid Guardian Number';
+            }
+        
+            if (!address) {
+                errors.address = 'This field is required';
+            } else if (!validator.isLength(address, { min: 2, max: 255 })) {
+                errors.address = 'Invalid Address';
+            }
+        
+            if (!roomId) {
+                errors.roomId = 'Please select a room';
+            }
+        
+                // Validating profileImage
+            if (!profileImage) {
+                errors.profileImage = 'This field is required';
+            } else if (!['image/jpeg', 'image/png', 'image.jpg'].includes(profileImage.type)) {
+                errors.profileImage = 'Invalid Image Format (JPEG or PNG or JPG only)';
+            } else if (profileImage.size > 1024 * 1024) {
+                errors.profileImage = 'Image size should be less than 1MB';
+            }
+        
+                // Validating aadharCard
+            if (!aadharCard) {
+                errors.aadharCard = 'This field is required';
+            } else if (!['image/jpeg', 'image/png'].includes(aadharCard.type)) {
+                errors.aadharCard = 'Invalid Image Format (JPEG or PNG only)';
+            } else if (aadharCard.size > 1024 * 1024) {
+                errors.aadharCard = 'Image size should be less than 1MB';
+            }
         }
 
         if (Object.keys(errors).length > 0) {
@@ -646,7 +646,7 @@ const AddResident = (props) => {
                         <option value="">Select a room</option>
                         {availableRooms.map((room) => (
                             <option key={room._id} value={room._id}>
-                            {`Room ${room.roomNumber} - Sharing: ${room.sharing} - Rent: ₹${room.rent}`}
+                            {`Room ${room.roomNumber} - Sharing: ${room.sharing} - Floor: ${room.floor}`}
                             </option>
                         ))}
                         </select>

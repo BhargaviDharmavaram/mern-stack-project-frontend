@@ -30,9 +30,16 @@ const PaymentReminders = () => {
     }
 
     return (
-        <div>
-            <h2>Send Payment Reminders</h2>
-            <button onClick={sendPaymentReminders}>
+        <div className="mb-3 text-center" >
+            <h3 style={{ color: "#EE6C13" }}>Send Payment Reminders</h3>
+            <button style={{
+                        margin: '5px',
+                        padding: '10px',
+                        backgroundColor: '#5CBDB6',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px'
+                    }} onClick={sendPaymentReminders}>
                 Send Reminders
             </button>
             {isLoading && !message && <p>Loading...</p>}

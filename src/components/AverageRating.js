@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Rating from "react-rating";
 import { Button, Offcanvas, OffcanvasHeader, OffcanvasBody } from "reactstrap";
 import { useParams } from "react-router-dom";
 import ShowPGReviews from "./ShowPGReviews";
+import StarRating from 'react-star-ratings';
 
 const AverageRating = (props) => {
     const [showReviews, setShowReviews] = useState(false)
@@ -43,30 +43,43 @@ const AverageRating = (props) => {
 
     return (
         <div>
-            <h2>Overall Average Rating</h2>
-            {errorMessage ? (
-                <p>{errorMessage}</p> // Display error message if present
-            ) : (
-                <>
-                    <Rating
-                        emptySymbol={<span className="star">&#9734;</span>}
-                        fullSymbol={<span className="star">&#9733;</span>}
-                        initialRating={Math.round(averageRating.overallAverageRating * 10) / 10}
-                        readonly
-                    />
-                    <li>Facilities: {averageRating.averageFacilitiesRating}</li>
-                    <li>Food: {averageRating.averageFoodRating}</li>
-                    <li>Hygienic: {averageRating.averageHygienicRating}</li>
-                    <li>Safety: {averageRating.averageSafetyRating}</li>
-                    <li>Overall Rating: {averageRating.overallAverageRating}</li>
-                    {averageRating.overallAverageRating > 0 && ( // Conditionally render the button
-                        <button onClick={() => setShowReviews(true)}>Get Reviews</button>
+            <h3 className="mb-3 text-center" style={{ color: "#EE6C13" }}>Average Rating Details</h3>
+            <h5 className="card-title text-center" style={{ color: "#9A32E7" }}>Overall Average Rating</h5> <br />
+            <div className="card" style={{height:"35vh"}}>
+                <div className="card-body text-center">
+                    {errorMessage ? (
+                        <p className="card-text">{errorMessage}</p> // Display error message if present
+                    ) : (
+                        <>
+                            <StarRating
+                                rating={averageRating.overallAverageRating}
+                                starRatedColor="gold" // Customize the color of filled stars
+                                numberOfStars={5} // Set the number of stars
+                                starDimension="34px" // Set the size of stars
+                                starSpacing="4px" // Add spacing between stars
+                                name="rating"
+                            />
+                            <div className="card-text">
+                                <p style={{ margin: 0 }}>Facilities: {averageRating.averageFacilitiesRating}</p>
+                                <p style={{ margin: 0 }}>Food: {averageRating.averageFoodRating}</p>
+                                <p style={{ margin: 0 }}>Hygienic: {averageRating.averageHygienicRating}</p>
+                                <p style={{ margin: 0 }}>Safety: {averageRating.averageSafetyRating}</p>
+                                <p style={{ margin: 0 }}>Overall Rating: {averageRating.overallAverageRating}</p>
+                            </div>
+                            {averageRating.overallAverageRating > 0 && ( // Conditionally render the button
+                                <button style={{
+                                    margin: '5px',
+                                    padding: '10px',
+                                    backgroundColor: '#5CBDB6',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '8px'
+                                }} onClick={() => setShowReviews(true)}>Get Reviews</button>
+                            )}
+                        </>
                     )}
-                </>
-            )}
-            {/* {!showReviews && (
-                <button onClick={() => setShowReviews(true)}>Get Reviews</button>
-            )} */}
+                </div>
+            </div>
             {showReviews && (
                 <Offcanvas isOpen={showReviews} toggle={handleCancel}>
                     <OffcanvasHeader>

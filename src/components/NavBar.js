@@ -182,7 +182,7 @@ const NavBar = (props) => {
     return (
         <div>
             <RoleContext.Provider value = {{role , userLoggedIn, handleLogout}}>
-            <nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor : '#393239'}}>
+            <nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor : '#0D0D0C'}}>
           <div className="navbar-left">
             <Link
               className="navbar-brand"
