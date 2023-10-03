@@ -7,16 +7,17 @@ import PaymentReminders from "./PaymentReminders";
 import PaymentDetails from "./PaymentsDetails";
 import PaymentsPieChart from "./PaymentsPieChart";
 import RoomPieChart from "./RoomPieChart";
-import { RoleContext } from "./NavBar";
+import { RoleContext } from "./Main";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { startGetAllReviewsForPGAdmin } from "../actions/reviewRatingActions";
 import {
-  startGetCompletedPayments,
-  startGetCompletedPaymentsTotal,
-  startGetPendingPayments,
-  startGetPendingPaymentsTotal,
+     startGetCompletedPayments,
+     startGetCompletedPaymentsTotal,
+     startGetPendingPayments,
+     startGetPendingPaymentsTotal,
 } from "../actions/paymentActions";
+import { startGetResidents } from "../actions/residentsActions";
 
 const rowStyle = {
     display: "flex",
@@ -44,58 +45,59 @@ const AdminDashboard = (props) => {
     const { pgDetailsId } = useParams()
     const dispatch = useDispatch()
     useEffect(() => {
-      dispatch(startGetAllReviewsForPGAdmin(pgDetailsId))
-      dispatch(startGetCompletedPayments(pgDetailsId))
-      dispatch(startGetPendingPayments(pgDetailsId))
-      dispatch(startGetCompletedPaymentsTotal(pgDetailsId))
-      dispatch(startGetPendingPaymentsTotal(pgDetailsId))
-    })
+        dispatch(startGetResidents(pgDetailsId))
+        dispatch(startGetAllReviewsForPGAdmin(pgDetailsId))
+        dispatch(startGetCompletedPayments(pgDetailsId))
+        dispatch(startGetPendingPayments(pgDetailsId))
+        dispatch(startGetCompletedPaymentsTotal(pgDetailsId))
+        dispatch(startGetPendingPaymentsTotal(pgDetailsId))
+    }, [dispatch,pgDetailsId])
 
     return (
-      <div>
-        {role === "pg_admin" && (
           <div>
-            <div style={linkContainerStyle}>
-              <Link style={linkStyle} to={`/addroom/${pgDetailsId}`}>
-                Add Room
-              </Link>
-              <Link style={linkStyle} to={`/addresident/${pgDetailsId}`}>
-                Add Resident
-              </Link>
-              <Link style={linkStyle} to={`/vacated-residents/${pgDetailsId}`}>
-                Vacated Residents
-              </Link>
-            </div>
-            <div style={rowStyle}>
-              <div style={columnStyle}>
-                <ResidentsDetails />
-              </div>
-              <div style={columnStyle}>
-                <RoomDetails />
-              </div>
-            </div>
-            <div style={rowStyle}>
-              <div style={columnStyle}>
-                <PaymentDetails />
-              </div>
-              <div style={columnStyle}>
-                <AverageRating />
-              </div>
-            </div>
-            <div style={rowStyle}>
-              <div style={columnStyle}>
-                <PaymentReminders />
-              </div>
-              <div style={columnStyle}>
-                <RoomPieChart />
-              </div>
-              <div style={columnStyle}>
-                <PaymentsPieChart />
-              </div>
-            </div>
+               {role === "pg_admin" && (
+                    <div>
+                         <div style={linkContainerStyle}>
+                              <Link style={linkStyle} to={`/addroom/${pgDetailsId}`}>
+                                   Add Room
+                              </Link>
+                              <Link style={linkStyle} to={`/addresident/${pgDetailsId}`}>
+                                   Add Resident
+                              </Link>
+                              <Link style={linkStyle} to={`/vacated-residents/${pgDetailsId}`}>
+                                   Vacated Residents
+                              </Link>
+                         </div>
+                         <div style={rowStyle}>
+                              <div style={columnStyle}>
+                                   <ResidentsDetails />
+                              </div>
+                              <div style={columnStyle}>
+                                   <RoomDetails />
+                              </div>
+                         </div>
+                         <div style={rowStyle}>
+                              <div style={columnStyle}>
+                                   <PaymentDetails />
+                              </div>
+                              <div style={columnStyle}>
+                                   <AverageRating />
+                              </div>
+                         </div>
+                         <div style={rowStyle}>
+                              <div style={columnStyle}>
+                                   <PaymentReminders />
+                              </div>
+                              <div style={columnStyle}>
+                                   <RoomPieChart />
+                              </div>
+                              <div style={columnStyle}>
+                                   <PaymentsPieChart />
+                              </div>
+                         </div>
+                    </div>
+               )}
           </div>
-        )}
-      </div>
     )
 }
 

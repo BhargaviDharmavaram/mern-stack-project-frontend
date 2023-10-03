@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './components/NavBar'
+import Main from './components/Main'
 import jwt_decode from 'jwt-decode'
 import { useDispatch } from 'react-redux';
 import { startGetAdminPgDetails, startGetListOfPgs } from './actions/pgDetailsActions';
@@ -30,9 +30,15 @@ const App = (props) => {
         }
     }, [dispatch, userLoggedIn])
 
+    useEffect(()=>{
+        if(localStorage.getItem('token')){
+            handleAuth()
+        }
+    }, [])
+
     return (
         <div>
-        <NavBar userLoggedIn={userLoggedIn} handleAuth={handleAuth} role={role} />
+        <Main userLoggedIn={userLoggedIn} handleAuth={handleAuth} role={role} />
         </div>
     )
 }

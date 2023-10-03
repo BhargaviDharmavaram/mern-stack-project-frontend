@@ -42,24 +42,28 @@ const RoomsList = (props) => {
         <h4 className="mb-3 text-center" style={{color: '#298384'}}>Total Rooms - {rooms.length}</h4>
         <div className="card">
             <div className="card-body" style={{ overflowY: "scroll", maxHeight: "400px" }}>
-                {sortedRooms.map((room) => (
-                    <div key={room._id} className="card mb-2">
-                        <div className="card-body">
-                            <h5 className="card-title">Room Number: {room.roomNumber}</h5>
-                            <div>
-                                <button className="icon-button" onClick={() => handleShowRoom(room._id)}>
-                                    <FaEye style={{ color: "blue" }} />
-                                </button>
-                                <button className="icon-button" onClick={() => handleEditRoom(room._id)}>
-                                    <FaEdit style={{ color: "green" }} />
-                                </button>
-                                <button className="icon-button" onClick={() => handleRemoveRoom(room._id)}>
-                                    <FaTrash style={{ color: "red" }} />
-                                </button>
+                {sortedRooms.length === 0 ? <p> No Rooms found. Add first Room </p> : 
+                    <div> 
+                        {sortedRooms.map((room) => (    
+                            <div key={room._id} className="card mb-2">
+                                <div className="card-body">
+                                    <h5 className="card-title">Room Number: {room.roomNumber}</h5>
+                                    <div>
+                                        <button className="icon-button" onClick={() => handleShowRoom(room._id)}>
+                                            <FaEye style={{ color: "blue" }} />
+                                        </button>
+                                        <button className="icon-button" onClick={() => handleEditRoom(room._id)}>
+                                            <FaEdit style={{ color: "green" }} />
+                                        </button>
+                                        <button className="icon-button" onClick={() => handleRemoveRoom(room._id)}>
+                                            <FaTrash style={{ color: "red" }} />
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
-                ))}
+                }
             </div>
 
             <Modal isOpen={showModal} toggle={closeModal}>
