@@ -16,11 +16,11 @@ const PendingPayments = (props) => {
     }, [dispatch, pgDetailsId])
     return (
         <div>
-            <h4>Pending Payments - {pendingPayments.length} </h4>
+            <h4 style={{color : 'red'}}>Pending Payments - {pendingPayments.length} </h4>
             {pendingPayments.map((ele)=>{
                 return(
                     <div key={ele._id}>
-                        <li> Resident Name : {ele.residentId && ele.residentId.name} - Amount : {ele.amount} </li>
+                        <li> <strong> {ele.residentId && ele.residentId.name} </strong> - Amount : {ele.amount} </li>
                     </div>
                 )
             })}

@@ -45,7 +45,7 @@ const AddReview = (props) => {
             <h2>Add Review</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group" style={{margin:"10px"}}>
-                    <label htmlFor="review">Review</label>
+                    <label htmlFor="review">Review</label> <br />
                     <input
                         type="text"
                         id="review"
@@ -56,8 +56,8 @@ const AddReview = (props) => {
                         required
                     />
                 </div>
-
-                <div className="form-group">
+                <label>Ratings</label> <br />
+                <div className="form-group form-control">
                     <label style={{marginRight:"20px"}}>Food Rating</label>
                     <StarRatings
                         rating={food}
@@ -71,7 +71,7 @@ const AddReview = (props) => {
 
                 <div className="mb-3"></div>
 
-                <div className="form-group">
+                <div className="form-group form-control">
                     <label style={{marginRight:"20px"}}>Facilities Rating</label>
                     <StarRatings
                         rating={facilities}
@@ -85,7 +85,7 @@ const AddReview = (props) => {
 
                 <div className="mb-3"></div>
 
-                <div className="form-group">
+                <div className="form-group form-control">
                     <label style={{marginRight:"20px"}}>Hygienic Rating</label>
                     <StarRatings
                         rating={hygienic}
@@ -99,7 +99,7 @@ const AddReview = (props) => {
 
                 <div className="mb-3"></div>
 
-                <div className="form-group">
+                <div className="form-group form-control">
                     <label style={{marginRight:"20px"}}>Safety Rating</label>
                     <StarRatings
                         rating={safety}

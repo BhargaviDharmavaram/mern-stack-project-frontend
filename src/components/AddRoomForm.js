@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { startCreateRoom, startGetUnAvailableRooms, startGetAllRooms, startGetAvailableRooms } from '../actions/roomActions';
-import { RoleContext } from './NavBar';
+import { RoleContext } from './Main';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const AddRoom = (props) => {

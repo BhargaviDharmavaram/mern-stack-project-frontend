@@ -1,6 +1,6 @@
 import React, { useContext }  from "react"
 import PGList from "./PgList"
-import { RoleContext } from "./NavBar"
+import { RoleContext } from "./Main"
 
 const ResidentDashBoard = (props) => {
     const {role} = useContext(RoleContext)

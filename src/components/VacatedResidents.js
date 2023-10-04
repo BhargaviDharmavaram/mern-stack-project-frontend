@@ -103,7 +103,7 @@ const VacatedResidents = (props) => {
                     <td>Profile Image:</td>
                         <td>  
                             <img
-                                src={`http://localhost:3800/images/${selectedResident.profileImage}`}
+                                src={selectedResident.profileImage}
                                 width="200"
                                 height="200"
                                 alt="profile"
@@ -134,7 +134,7 @@ const VacatedResidents = (props) => {
                     <td>Aadhar Card:</td>
                     <td>  
                         <img
-                            src={`http://localhost:3800/images/${selectedResident.aadharCard}`}
+                            src={selectedResident.aadharCard}
                             width="200"
                             height="200"
                             alt="Aadhar"

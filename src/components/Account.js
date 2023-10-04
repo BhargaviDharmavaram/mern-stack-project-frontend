@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from 'axios';
-import { RoleContext } from "./NavBar";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { RoleContext } from "./Main";
+import { Link } from "react-router-dom";
 
 const Account = (props) => {
     const [residentPgDetails, setResidentPgDetails] = useState({})
@@ -17,7 +17,6 @@ const Account = (props) => {
                 }
             })
                 .then((res) => {
-                    console.log('account-res', res.data)
                     setUser(res.data)
                 })
                 .catch((err) => {
@@ -29,40 +28,40 @@ const Account = (props) => {
     const handlePgDetails = async (userId) => {
         try {
             const response = await axios.get(`http://localhost:3800/api/residents/pgDetails/${userId}`)
-            console.log(response.data)
             setResidentPgDetails(response.data)
             setShowDetails(true) // Show details when the button is clicked
-        }
-        catch (e) {
+        } catch (e) {
             alert(e.message)
         }
     }
 
     return (
-        <div className="container">
-            <div className="text-center">
-                <h1>User Account Details</h1>
-                <p>User Name - {user.username}</p>
-                <p>Email - {user.email}</p>
-                <p>Role - {user.role}</p>
-                {role === 'pg_resident' &&
-                    <>
-                        <button onClick={() => handlePgDetails(user.id)}>Get PG Details</button>
-                        {showDetails && // Show details only if showDetails is true
-                            <div>
-                                Profile: {residentPgDetails.profileImage && <img src={`http://localhost:3800/images/${residentPgDetails.profileImage}`} width="100px" height="100px" alt="ProfileImage" />}
-                                <li>Name : {residentPgDetails.name}</li>
-                                <li>PG Name: {residentPgDetails.pgDetailsId && residentPgDetails.pgDetailsId.name}</li>
-                                <li>Date Of Joining: {residentPgDetails.dateOfJoining && residentPgDetails.dateOfJoining.slice(0, 10)}</li>
-                                Allocated Details:
-                                <li>Room Number: {residentPgDetails.roomId && residentPgDetails.roomId.roomNumber}</li>
-                                <li>Sharing: {residentPgDetails.roomId && residentPgDetails.roomId.sharing}</li>
-                                <li>Floor Number: {residentPgDetails.roomId && residentPgDetails.roomId.floor}</li>
-                            </div>
-                        }
-                    </>
-                }
-                <Link to = "/">Home</Link>
+        <div className="container d-flex justify-content-center align-items-center" style={{ marginTop : '5px' }}>
+            <div className="card" >
+                <div className="card-body">
+                    <h1 className="card-title text-center">User Account Details</h1>
+                    <p className="card-text">User Name - {user.username}</p>
+                    <p className="card-text">Email - {user.email}</p>
+                    <p className="card-text">Role - {user.role}</p>
+                    {role === 'pg_resident' &&
+                        <>
+                            <button onClick={() => handlePgDetails(user.id)}>Get PG Details</button>
+                            {showDetails && // Show details only if showDetails is true
+                                <div>
+                                    <p className="card-text">Profile: {residentPgDetails.profileImage && <img src={`http://localhost:3800/images/${residentPgDetails.profileImage}`} width="100px" height="100px" alt="ProfileImage" />}</p>
+                                    <p className="card-text">Name: {residentPgDetails.name}</p>
+                                    <p className="card-text">PG Name: {residentPgDetails.pgDetailsId && residentPgDetails.pgDetailsId.name}</p>
+                                    <p className="card-text">Date Of Joining: {residentPgDetails.dateOfJoining && residentPgDetails.dateOfJoining.slice(0, 10)}</p>
+                                    <p className="card-text">Allocated Details:</p>
+                                    <p className="card-text">Room Number: {residentPgDetails.roomId && residentPgDetails.roomId.roomNumber}</p>
+                                    <p className="card-text">Sharing: {residentPgDetails.roomId && residentPgDetails.roomId.sharing}</p>
+                                    <p className="card-text">Floor Number: {residentPgDetails.roomId && residentPgDetails.roomId.floor}</p>
+                                </div>
+                            }
+                        </>
+                    }
+                    <Link to="/">Home</Link>
+                </div>
             </div>
         </div>
     )

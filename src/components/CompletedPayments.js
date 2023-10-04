@@ -19,7 +19,7 @@ const CompletedPayments = (props) => {
             {completedPayments.map((ele)=>{
                 return(
                     <div key={ele._id}> 
-                        <li> Resident Name : {ele.residentId && ele.residentId.name} - Amount : {ele.amount} </li>
+                        <li> <strong> {ele.residentId && ele.residentId.name} </strong> - Amount : {ele.amount} </li>
                     </div>
                 )
             })}

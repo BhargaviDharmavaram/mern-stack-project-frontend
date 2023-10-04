@@ -1,123 +1,3 @@
-// import React, {createContext} from "react"
-// import {Link, Route, withRouter} from 'react-router-dom'
-// import Swal from "sweetalert2"
-// import Home from "./Home"
-// import Login from "./Login"
-// import Register from "./Register"
-// import Account from "./Account"
-// import AddPG from "./CreatePgForm"
-// import AddRoom from "./AddRoomForm"
-// import AddResident from "./AddResidentForm"
-// import ConfirmResident from "./ConfirmResident"
-// import AdminDashBoard from "./AdminDashBoard"
-// import PaymentPage from "./PaymentPage"
-// import ResidentDashBoard from "./ResidentDashboard"
-// import VacatedResidents from "./VacatedResidents"
-// import ShowPG from "./ShowPg"
-// import SelectPg from "./SelectPg"
-// import EditRoomPage from "./EditRoomPage"
-// import EditResident from "./EditResident"
-// import EditPG from "./EditPG"
-// import PrivateRoute from "./PrivateRoute"
-
-// export const RoleContext = createContext()
-
-// const NavBar = (props) => {
-//     const {userLoggedIn, handleAuth, role} = props
-
-//     const handleLogout = () => {
-//         // Use SweetAlert2 for logout confirmation
-//         Swal.fire({
-//             title: "Logout",
-//             text: "Are you sure you want to log out?",
-//             icon: "warning",
-//             showCancelButton: true,
-//             confirmButtonText: "Logout",
-//             cancelButtonText: "Cancel",
-//         }).then((result) => {
-//             if (result.isConfirmed) {
-//                 // User confirmed logout
-//                 // For removing token from local storage
-//                 localStorage.removeItem('token')
-    
-//                 // For logout the user
-//                 handleAuth()
-    
-//                 Swal.fire({
-//                     title: "Logged out successfully!",
-//                     icon: "success",
-//                     showConfirmButton: false,
-//                 })
-    
-//                 // Navigate only after confirmation
-//                 props.history.push('/')
-//             }
-//         })
-//     }
-    
-//     return(
-//         <div>
-//             <RoleContext.Provider value = {{role, userLoggedIn, handleLogout}}>
-//                 <li><Link to = "/"> Home </Link> </li>
-//                 {userLoggedIn ? 
-//                     <React.Fragment>
-//                         <li> <Link to = "/account"> Account </Link> </li>
-//                         <li> <Link onClick = {handleLogout} > Logout </Link> </li>
-//                         { role === 'pg_admin' && 
-//                             <div> 
-//                                 <li> <Link to = '/addpg'> AddPG </Link> </li>
-//                                 <li> <Link to = '/selectpg'>Select PG</Link> </li>
-//                                 {/* <li> <Link to = '/addroom'> AddRoom </Link>  </li>
-//                                 <li> <Link to = '/addresident'> AddResident </Link></li>  */}
-//                                 {/* <li> <Link to = '/admindashboard'>AdminDashBoard</Link> </li> */}
-//                             </div> 
-//                         }
-//                         {role === 'pg_resident' && 
-//                             <div>
-//                                 <li> <Link to = '/residentdashboard'>Resident DashBoard</Link> </li>
-//                             </div>
-//                         }
-//                     </React.Fragment> : <React.Fragment>
-//                         <li> <Link to = "/register"> Register</Link> </li>
-//                         <li> <Link to = "/login"> Login </Link> </li>
-//                     </React.Fragment>
-//                 }
-
-//                 <Route path = "/" component = {Home} exact = {true} />
-//                 <Route path = "/register" component = {Register} />
-//                 <Route path = "/login"  render = {(props)=>{
-//                         return <Login 
-//                             {...props}
-//                             handleAuth = {handleAuth}
-//                         />
-//                     }} />
-//                 <PrivateRoute path = '/selectpg' component = {SelectPg} />
-//                 <PrivateRoute path = '/account' component={Account} />
-
-//                 <PrivateRoute path = '/addpg' component = {AddPG}/>
-//                 <PrivateRoute path = '/edit-pg/:pgDetailsId' component = {EditPG} />
-
-//                 <PrivateRoute path = "/addroom/:pgDetailsId" component={AddRoom} />
-//                 <PrivateRoute path = "/edit-room/:pgDetailsId/:roomId" component={EditRoomPage} />
-
-//                 <PrivateRoute path = "/addresident/:pgDetailsId" component={AddResident} />
-//                 <PrivateRoute path = "/editresident/:pgDetailsId/:residentId" component={EditResident} />
-
-//                 <Route path = "/confirm" component={ConfirmResident} />
-//                 <Route path = "/payment/:razorPayId" component = {PaymentPage} />
-
-//                 <PrivateRoute path = '/admindashboard/:pgDetailsId' component = {AdminDashBoard} />
-//                 <PrivateRoute path = "/vacated-residents/:pgDetailsId" component={VacatedResidents} />
-
-//                 <PrivateRoute path = '/residentdashboard' component = {ResidentDashBoard} />
-//                 <PrivateRoute path = "/showPg/:pgDetailsId" component={ShowPG} />
-//             </RoleContext.Provider>
-//         </div>
-//     )
-// }
-
-// export default withRouter(NavBar)
-
 import React, { createContext } from "react";
 import { Link, Route, withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -140,13 +20,14 @@ import EditResident from "./EditResident";
 import EditPG from "./EditPG";
 import PrivateRoute from "./PrivateRoute";
 import { FaUserCircle } from "react-icons/fa"; // Import the FaUserCircle icon
-import '../css/NavBar.css'
+import '../css/Main.css'
+import HomeNestLogo from '../images/HomeNest Logo.jpg'
 
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 export const RoleContext = createContext();
 
-const NavBar = (props) => {
+const Main = (props) => {
     const { userLoggedIn, handleAuth, role } = props;
 
     const handleLogout = () => {
@@ -184,6 +65,7 @@ const NavBar = (props) => {
             <RoleContext.Provider value = {{role , userLoggedIn, handleLogout}}>
             <nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor : '#0D0D0C'}}>
           <div className="navbar-left">
+            <img src={HomeNestLogo} height='40px' width='40px' alt="Logo" style={{ borderRadius: '50%' }} />
             <Link
               className="navbar-brand"
               style={{ color: "white", textDecoration: "none" }}
@@ -280,13 +162,13 @@ const NavBar = (props) => {
             <Route path="/register" component={Register} />
             <Route
                 path="/login"
-                render={(props) => {
-                return <Login {...props} handleAuth={handleAuth} />;
-            }}
+                render={(props) => <Login {...props} handleAuth={handleAuth} />}
             />
+            <Route path="/confirm" component={ConfirmResident} />
+            <Route path="/payment/:razorPayId" component={PaymentPage} />
+
             <PrivateRoute path="/selectpg" component={SelectPg} />
             <PrivateRoute path="/account" component={Account} />
-
             <PrivateRoute path="/addpg" component={AddPG} />
             <PrivateRoute path="/edit-pg/:pgDetailsId" component={EditPG} />
 
@@ -304,9 +186,6 @@ const NavBar = (props) => {
                 path="/editresident/:pgDetailsId/:residentId"
                 component={EditResident}
             />
-
-            <Route path="/confirm" component={ConfirmResident} />
-            <Route path="/payment/:razorPayId" component={PaymentPage} />
 
             <PrivateRoute
                 path="/admindashboard/:pgDetailsId"
@@ -328,4 +207,4 @@ const NavBar = (props) => {
     );
 };
 
-export default withRouter(NavBar);
+export default withRouter(Main);

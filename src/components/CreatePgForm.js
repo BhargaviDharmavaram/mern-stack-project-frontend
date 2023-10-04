@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { startCreatePG } from '../actions/pgDetailsActions';
 import validator from 'validator';
-import { RoleContext } from "./NavBar";
+import { RoleContext } from "./Main";
 
 const AddPG = (props) => {
     const [name, setName] = useState('');
@@ -33,6 +33,7 @@ const AddPG = (props) => {
     };
 
     const handleFileChange = (e) => {
+        console.log(e.target.files)
         setImages(e.target.files);
     };
 
@@ -175,6 +176,7 @@ const AddPG = (props) => {
             };
 
             dispatch(startCreatePG(formData, reset));
+            console.log(formData)
         }
     };
 
